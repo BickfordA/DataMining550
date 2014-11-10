@@ -1,5 +1,12 @@
 package data;
 
-public class Parser {
-
+/**
+ * Interface for all of the different parsers
+ * @author aidanbickford
+ *
+ */
+public interface Parser 
+{
+	TimeSeries[] loadDataSet();
+	
 }

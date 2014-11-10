@@ -9,6 +9,7 @@ public class TunableParameterService {
     private static TunableParameterService _instance;
     
 	//Declare all of the parameters here
+    DataSetSource _dataSet;
 	
 	//private final .....
 	
@@ -30,5 +31,9 @@ public class TunableParameterService {
 
         return _instance;
     }
+
+	public DataSetSource getDataSet() {
+		return _dataSet;
+	}
 
 }
