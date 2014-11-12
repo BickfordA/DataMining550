@@ -24,7 +24,9 @@ public class CSVParser implements Parser {
 	public TimeSeries[] loadDataSet() {
 		ArrayList<String[]> rawData = importData(_fileName);
 		TimeSeries[] timeSeriesData = splitIntoTimeSeries(rawData);
-		timeSeriesData = normalizeData(timeSeriesData);
+		System.out.println("Data set imported ");
+		timeSeriesData = computeZScore(timeSeriesData);
+		System.out.println("Data set z normalized ");
 		return timeSeriesData;
 	}
 
@@ -58,48 +60,42 @@ public class CSVParser implements Parser {
 		return _outData;
 	}
 
-	/**
-	 * normalizes all of the dimensions of the input dataset to the range 0 to 1
-	 * 
-	 * @param input
-	 *            -unnormalized dataset
-	 * @return - normalized dataset
-	 */
-	public TimeSeries[] normalizeData(TimeSeries[] input) {
-		TimeSeries[] normalized = new TimeSeries[input.length];
-		double high;
-		double low;
-		for (int i = 0; i < input[0].getTimeSeries().length; i++) { // for each
-																	// dimension
-																	// of the
-																	// data
-																	// points
-			low = 0;
-			high = 0;
-			for (int j = 0; j < input.length; j++) { // find the min and max
-														// values over all
-														// datavectors
-				// find min
-				if (low > input[j].getTimeSeries()[i] || j == 0) {
-					low = input[j].getTimeSeries()[i];
-				}
-				// find max
-				if (high < input[j].getTimeSeries()[i] || j == 0) {
-					high = input[j].getTimeSeries()[i];
-				}
-			}
-			for (int j = 0; j < input.length; j++) { // Normalize that dimension
-														// for all datavectors
-				// normalize within range 0 to 1
-				input[j].getTimeSeries()[i] = (input[j].getTimeSeries()[i] - low)
-						/ (high - low);
-			}
 
+	public TimeSeries[] computeZScore(TimeSeries[] input) {
+		// z-score 
+		//
+		// z-score = (x - mean ) / (standard deviation)
+		//
+		
+		TimeSeries[] normalized = new TimeSeries[input.length];
+		
+
+		for (int i = 0; i < input.length; i++) {
+			double[] values = input[i].getTimeSeries();
+			double mean = 0;
+			double stdev = 0;
+			//get the mean 
+			for(int j = 0 ; j < values.length; j++){
+				mean += values[j];
+			}
+			mean = mean / values.length;
+		
+			//get the standard deviation
+			for(int j = 0 ; j < values.length; j++){
+				double v = values[j] - mean;
+				stdev +=  v * v ;
+			}
+			stdev = stdev / values.length;
+			stdev = Math.sqrt(stdev);
+			
+			//calculate the z-score
+			for(int j = 0 ; j < values.length; j++){
+				values[j] = (values[j]- mean) / stdev;
+			}
+			
+			normalized[i] = new TimeSeries(values);
 		}
-		// copy over normalized data
-		for (int i = 0; i < normalized.length; i++) {
-			normalized[i] = input[i];
-		}
+
 		return normalized;
 	}
 
