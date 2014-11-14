@@ -3,7 +3,7 @@ package services;
 public class DataSetParameterService 
 {
 	private static DataSetParameterService _instance;
-	private final DataSetSource _dataSet;
+	private final DataSetSourceEnum _dataSet;
 	private final String _fileName;
 	private final String _description;
 	

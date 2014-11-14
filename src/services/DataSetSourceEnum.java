@@ -1,7 +1,7 @@
 package services;
 
 
-public enum DataSetSource
+public enum DataSetSourceEnum
 {
 	Buzz,
 	Electric,

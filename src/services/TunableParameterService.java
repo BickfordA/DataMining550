@@ -1,5 +1,7 @@
 package services;
 
+import factories.MotifMiningAlgorithmEnum;
+
 
 public class TunableParameterService {
 	/**
@@ -9,13 +11,16 @@ public class TunableParameterService {
     private static TunableParameterService _instance;
     
 	//Declare all of the parameters here
-    DataSetSource _dataSet;
+    DataSetSourceEnum _dataSet;
+    MotifMiningAlgorithmEnum _algorithm;
 	
 	//private final .....
 	
 	private TunableParameterService()
 	{
 		//set the values here 
+		_dataSet = DataSetSourceEnum.Electric;
+		_algorithm = MotifMiningAlgorithmEnum.Balasubramanian;
 		
 		
 	}
@@ -32,8 +37,12 @@ public class TunableParameterService {
         return _instance;
     }
 
-	public DataSetSource getDataSet() {
+	public DataSetSourceEnum getDataSet() {
 		return _dataSet;
+	}
+
+	public MotifMiningAlgorithmEnum getMotifAlgorithm() {
+		return _algorithm;
 	}
 
 }
