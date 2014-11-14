@@ -8,7 +8,7 @@ public abstract class MotifMiner
 {
 	protected List<MulitDimensionalMotif> _motifs;
 	
-	protected abstract void mineDataForMotifs(TimeSeries[] dataset);
+	public abstract void mineDataForMotifs(TimeSeries[] dataset);
 	
 	
 }

@@ -1,6 +1,8 @@
+import multiVariateMotif.MotifMiner;
 import data.CSVParser;
 import data.Parser;
 import data.TimeSeries;
+import factories.MotifMiningFactory;
 import services.TunableParameterService;
 
 
@@ -13,8 +15,10 @@ public class Main {
 		Parser csvParser = new CSVParser();
 		TimeSeries[] ts = csvParser.loadDataSet();
 		
+		MotifMiningFactory mineFactory = new MotifMiningFactory();
+		MotifMiner currentMiner = mineFactory.getMotifMiner();
 		
-		
+		currentMiner.mineDataForMotifs(ts);
 	}
 }
 

@@ -5,8 +5,7 @@ import data.TimeSeries;
 
 public class Minnen extends MotifMiner {
 
-	@Override
-	protected void mineDataForMotifs(TimeSeries[] dataset) {
+	public void mineDataForMotifs(TimeSeries[] dataset) {
 		// TODO Auto-generated method stub
 		
 	}
