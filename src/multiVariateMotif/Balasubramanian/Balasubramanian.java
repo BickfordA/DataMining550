@@ -37,10 +37,10 @@ public class Balasubramanian extends MotifMiner{
 					if(!currentNeighborSet.contains(m)){
 						currentNeighborSet.add(m);
 					}
-					
 				}
 			}
 			
+			//generate the powerset for the currentNeighborSet
 			
 			
 		}
