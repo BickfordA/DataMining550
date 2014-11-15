@@ -38,5 +38,13 @@ public class SingleDimensionalMotif {
 		return overlap;
 	}
 	
+	public int start(){
+		return _motif.start();
+	}
+	
+	public int end(){
+		return _motif.end();
+	}
+	
 	
 }

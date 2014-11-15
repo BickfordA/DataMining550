@@ -15,17 +15,12 @@ public class TimeSeries {
 		}
 	}
 	
-	public double[] getTimeSeries()
-	{
-		return _data;
-	}
+	public double[] getTimeSeries() { return _data;}
 	
-	public int start(){
-		return _timeStamps[0];
-	}
+	public int start(){return _timeStamps[0];}
 	
-	public int end(){
-		return _timeStamps[_timeStamps.length-1];
-	}
+	public int end(){ return _timeStamps[_timeStamps.length-1]; }
+	
+	public int getStream() { return _stream; }
 }
 

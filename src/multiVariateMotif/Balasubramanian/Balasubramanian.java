@@ -45,11 +45,19 @@ public class Balasubramanian extends MotifMiner{
 			//generate the powerset for the currentNeighborSet
 			ArrayList<ArrayList<SingleDimensionalMotif>> neighborhoodMotifPowerSet = generateMotifBagPowerSet(currentNeighborSet);
 			
+			ArrayList<ArrayList<SingleDimensionalMotif>>  motifBag = new ArrayList<ArrayList<SingleDimensionalMotif>>();
+			ArrayList<TemporalOrdering> motifOrderings = new ArrayList<TemporalOrdering>();
 			for(ArrayList<SingleDimensionalMotif> set: neighborhoodMotifPowerSet){
 				//make sure that the motifs don't overlap (in the same single variate time stream)
 				if(noOverLappingMotifs(set)){
+					motifBag.add(set);
+					ArrayList<TemporalOrdering> tempOrderings = getTemporalOrderings(set);
 					
-					
+					for(TemporalOrdering ordering: tempOrderings){
+						if(!motifOrderings.contains(ordering)){
+							motifOrderings.add(ordering);
+						}
+					}
 				}
 			}
 		}
@@ -99,4 +107,23 @@ public class Balasubramanian extends MotifMiner{
 		return !overlapping;
 		
 	}
+	
+	public ArrayList<TemporalOrdering> getTemporalOrderings(ArrayList<SingleDimensionalMotif> motifSet)
+	{
+		ArrayList<TemporalOrdering> temporalOrderings = new ArrayList<TemporalOrdering>();
+		
+		//Temporal orderings are symmetric, whoo hoo!
+		for(int i = 0 ; i < motifSet.size(); i ++){
+			for(int j = i; j < motifSet.size(); j++){
+				if(i == j){
+					//don't need to compare against itself
+					continue;
+				}
+				TemporalOrdering newRelation = new TemporalOrdering(motifSet.get(i), motifSet.get(j));
+				temporalOrderings.add(newRelation);
+			}
+		}
+		return temporalOrderings;
+	}
+	
 }
