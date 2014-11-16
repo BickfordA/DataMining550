@@ -40,11 +40,17 @@ public class SequiturUtil {
 			for(Character c: charMotif){
 				symbols.add(new Symbol((int) c));
 			}
-			long[] motifLocation = Arrays.copyOf(locations, sm.)
-			Sequence newSeq = new Sequence(symbols);
-			SingleDimensionalMotif newMotif = new SingleDimensionalMotif( newSeq, seq.getStream())
+			int[] motifLocations = sm.getIndicies();
+			
+			for(int loc: motifLocations){
+			//create a new motif for each entry (collapse these down later?) aaaahhhh!!!
+				long[] motifPeriod = Arrays.copyOf(locations, loc , symbols.size());
+				Sequence newSeq = new Sequence(symbols, motifPeriod, seq.getStream());
+				SingleDimensionalMotif newMotif = new SingleDimensionalMotif( newSeq, seq.getStream());
+				motifsFound.add(newMotif);
+			}
 		}
-		
+
 		return motifsFound;
 	}
 	
