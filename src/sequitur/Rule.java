@@ -64,8 +64,6 @@ public class Rule{
     theGuard = new Guard(this);
     count = 0;
     index = 0;
-    
-    theRules.put(numRules, this);
   }
 
   public SequiturSymbol first(){

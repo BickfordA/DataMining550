@@ -9,10 +9,6 @@ import data.Symbol;
 
 public class SequiturUtil {
 	
-	private char[] _charAlphabet = { 'a', 'b', 'c', 'd',  'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 
-			'p', 'q','r','s','t','u','v','w','x','y','z'};
-	
-	
 	public ArrayList<SingleDimensionalMotif> getSequiturMotifs(Sequence seq)
 	{
 		ArrayList<SingleDimensionalMotif> motifsFound =  new ArrayList<SingleDimensionalMotif>();
@@ -31,12 +27,10 @@ public class SequiturUtil {
 		//get the rules
 		ArrayList<SequiturMotif> motifs  = firstRule.getRuleList();
 		
-		
-		
 		//convert to thesingle variate motif representation
 		for(SequiturMotif sm: motifs){
 			ArrayList<Character> charMotif = sm.getChars();
-			ArrayList<Symbol> symbols;
+			ArrayList<Symbol> symbols = new ArrayList<Symbol>();
 			for(Character c: charMotif){
 				symbols.add(new Symbol((int) c));
 			}
@@ -44,7 +38,7 @@ public class SequiturUtil {
 			
 			for(int loc: motifLocations){
 			//create a new motif for each entry (collapse these down later?) aaaahhhh!!!
-				long[] motifPeriod = Arrays.copyOf(locations, loc , symbols.size());
+				long[] motifPeriod = Arrays.copyOfRange(locations, loc , symbols.size());
 				Sequence newSeq = new Sequence(symbols, motifPeriod, seq.getStream());
 				SingleDimensionalMotif newMotif = new SingleDimensionalMotif( newSeq, seq.getStream());
 				motifsFound.add(newMotif);

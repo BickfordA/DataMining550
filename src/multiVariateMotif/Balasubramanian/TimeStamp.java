@@ -2,6 +2,8 @@ package multiVariateMotif.Balasubramanian;
 
 import java.util.ArrayList;
 
+import com.sun.org.apache.xpath.internal.FoundIndex;
+
 import sequitur.SequiturUtil;
 import data.Sequence;
 import data.SingleDimensionalMotif;
@@ -15,13 +17,14 @@ public class TimeStamp {
 		_subSeries = series;
 	}
 	
-	public ArrayList<SingleDimensionalMotif> getSubMotifs(){
-		SequiturUtil sq = new SequiturUtil();
+	public ArrayList<SingleDimensionalMotif> getSubMotifs()
+	{
+		ArrayList<SingleDimensionalMotif> foundMotifs = new ArrayList<SingleDimensionalMotif>();
+		
 		for(Sequence currentSequence: _subSeries){
-			ArrayList<SingleDimensionalMotif>  foundMotifs =  sq.getSequiturMotifs(currentSequence);
-			for(SingleDimensionalMotif s: foundMotifs){
-				s.
-			}
+			SequiturUtil sq = new SequiturUtil();
+			ArrayList<SingleDimensionalMotif>  seriesMotifs =  sq.getSequiturMotifs(currentSequence);
+			foundMotifs.addAll(seriesMotifs);
 		}
 		
 		return foundMotifs;

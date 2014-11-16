@@ -6,14 +6,11 @@ import data.DoubleTimeSeries;
 import data.Sequence;
 import data.Symbol;
 import services.TunableParameterService;
-import edu.*;
-
 
 public class Sax {
 	
 	private int _baseCardinality;
 	private int _wordLength;
-	private ISAXUtils _iSaxifier;
 	
 	public Sax(){
 		Sax(TunableParameterService.getInstance());
@@ -44,6 +41,7 @@ public class Sax {
 			Symbol repSymbol = new Symbol(rep);
 			saxSequence.add(repSymbol);
 		}
+		return new Sequence(saxSequence, tstamps, data.getStream() );
 	}
 	
 	public DoubleTimeSeries PiecewiseAggregateApproximation(DoubleTimeSeries timeSeries, int paaSize)
