@@ -19,6 +19,8 @@ public class TimeStamp {
 		
 		//return the set of all the single variate motifs found accross all of the dimension
 		
+		//make the motif's TimeSeries relative to the motif time stamp
+		
 		
 		return foundMotifs;
 	}

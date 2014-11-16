@@ -20,7 +20,7 @@ public class Balasubramanian extends MotifMiner{
 		
 	}
 	
-	public void generatMotifBags(int neighborhoodDistance, TimeStamp[] timeStamps)
+	public void generatMotifBagsAndOrderings(int neighborhoodDistance, TimeStamp[] timeStamps)
 	{
 		for(int i = 0;  i < timeStamps.length; i += neighborhoodDistance ){
 			TimeStamp[] currentNeighborHood = new TimeStamp[neighborhoodDistance];
@@ -46,17 +46,16 @@ public class Balasubramanian extends MotifMiner{
 			ArrayList<ArrayList<SingleDimensionalMotif>> neighborhoodMotifPowerSet = generateMotifBagPowerSet(currentNeighborSet);
 			
 			ArrayList<ArrayList<SingleDimensionalMotif>>  motifBag = new ArrayList<ArrayList<SingleDimensionalMotif>>();
-			ArrayList<TemporalOrdering> motifOrderings = new ArrayList<TemporalOrdering>();
+			ArrayList<ArrayList<TemporalOrdering> > motifOrdering = new ArrayList<ArrayList<TemporalOrdering> >();
+			
 			for(ArrayList<SingleDimensionalMotif> set: neighborhoodMotifPowerSet){
 				//make sure that the motifs don't overlap (in the same single variate time stream)
 				if(noOverLappingMotifs(set)){
 					motifBag.add(set);
-					ArrayList<TemporalOrdering> tempOrderings = getTemporalOrderings(set);
+					ArrayList<TemporalOrdering> tempOrdering = getTemporalOrderings(set);
 					
-					for(TemporalOrdering ordering: tempOrderings){
-						if(!motifOrderings.contains(ordering)){
-							motifOrderings.add(ordering);
-						}
+					if(!motifOrdering.contains(tempOrdering)){
+							motifOrdering.add(tempOrdering);
 					}
 				}
 			}

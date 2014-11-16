@@ -55,7 +55,7 @@ public class CSVParser implements Parser {
 			for (int j = 0; j < rawData.size(); j++) {
 				seriesData[j] = Double.parseDouble(rawData.get(j)[i]);
 			}
-			_outData[i] = new TimeSeries(seriesData);
+			_outData[i] = new TimeSeries(seriesData, i);
 		}
 		return _outData;
 	}
@@ -93,7 +93,7 @@ public class CSVParser implements Parser {
 				values[j] = (values[j]- mean) / stdev;
 			}
 			
-			normalized[i] = new TimeSeries(values);
+			normalized[i] = new TimeSeries(values, i);
 		}
 
 		return normalized;
