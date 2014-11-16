@@ -1,5 +1,6 @@
 package services;
 
+import factories.AlphabetEnum;
 import factories.MotifMiningAlgorithmEnum;
 
 
@@ -13,6 +14,10 @@ public class TunableParameterService {
 	//Declare all of the parameters here
     DataSetSourceEnum _dataSet;
     MotifMiningAlgorithmEnum _algorithm;
+    AlphabetEnum _saxAlphabet;
+    
+    int _iSaxBaseCardinality;
+    int _iSaxWordLength;
 	
 	//private final .....
 	
@@ -20,7 +25,10 @@ public class TunableParameterService {
 	{
 		//set the values here 
 		_dataSet = DataSetSourceEnum.Electric;
+		_saxAlphabet = AlphabetEnum.NormalAlphabet;
+		
 		_algorithm = MotifMiningAlgorithmEnum.Balasubramanian;
+		
 		
 		
 	}
@@ -43,6 +51,18 @@ public class TunableParameterService {
 
 	public MotifMiningAlgorithmEnum getMotifAlgorithm() {
 		return _algorithm;
+	}
+
+	public int getSaxBaseCardinality() {
+		return _iSaxBaseCardinality;
+	}
+
+	public int getSaxWordLength() {
+		return _iSaxWordLength;
+	}
+
+	public AlphabetEnum getAlphabet() {
+		return _saxAlphabet;
 	}
 
 }

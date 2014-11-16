@@ -1,11 +1,11 @@
 package multiVariateMotif.McGovern;
 
 import multiVariateMotif.MotifMiner;
-import data.TimeSeries;
+import data.DoubleTimeSeries;
 
 public class McGovern extends MotifMiner {
 
-	public void mineDataForMotifs(TimeSeries[] dataset) {
+	public void mineDataForMotifs(DoubleTimeSeries[] dataset) {
 		// TODO Auto-generated method stub
 		
 	}

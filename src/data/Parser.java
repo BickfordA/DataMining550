@@ -7,6 +7,6 @@ package data;
  */
 public interface Parser 
 {
-	TimeSeries[] loadDataSet();
+	DoubleTimeSeries[] loadDataSet();
 	
 }

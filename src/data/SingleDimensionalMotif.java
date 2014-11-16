@@ -2,10 +2,10 @@ package data;
 
 public class SingleDimensionalMotif {
 
-	private TimeSeries _motif;
+	private DoubleTimeSeries _motif;
 	private int _stream;
 	//this is used as a building block for the multidimensional motifs by 
-	public SingleDimensionalMotif(TimeSeries motif, int stream) {
+	public SingleDimensionalMotif(DoubleTimeSeries motif, int stream) {
 		_motif = motif;
 		_stream = stream;
 	}
@@ -15,7 +15,7 @@ public class SingleDimensionalMotif {
 		return _stream;
 	}
 	
-	public TimeSeries getTimeSeries()
+	public DoubleTimeSeries getTimeSeries()
 	{
 		return _motif;
 	}
@@ -38,11 +38,11 @@ public class SingleDimensionalMotif {
 		return overlap;
 	}
 	
-	public int start(){
+	public long start(){
 		return _motif.start();
 	}
 	
-	public int end(){
+	public long end(){
 		return _motif.end();
 	}
 	

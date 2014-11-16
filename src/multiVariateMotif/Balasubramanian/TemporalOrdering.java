@@ -1,16 +1,16 @@
 package multiVariateMotif.Balasubramanian;
 
 import data.SingleDimensionalMotif;
-import data.TimeSeries;
+import data.DoubleTimeSeries;
 
 public class TemporalOrdering {
-		private int _streamA;
-		private int _orderA; 
-		private int _streamB;
-		private int _orderB;
+		private long _streamA;
+		private long _orderA; 
+		private long _streamB;
+		private long _orderB;
 		private TemporalRelationEnum _relationship;
 
-	public TemporalOrdering(int streamA, int orderA, int streamB, int orderB, TemporalRelationEnum relationShip)
+	public TemporalOrdering(long streamA, long orderA, long streamB, long orderB, TemporalRelationEnum relationShip)
 	{
 		_streamA = streamA;
 		_streamB = streamB;
@@ -24,11 +24,11 @@ public class TemporalOrdering {
 	public TemporalOrdering(SingleDimensionalMotif seriesA, SingleDimensionalMotif seriesB)
 	{
 		//check for each of the thirteen cases
-		int startA = seriesA.start();
-		int endA = seriesA.end();
+		long startA = seriesA.start();
+		long endA = seriesA.end();
 		
-		int startB = seriesB.start();
-		int endB = seriesB.end();
+		long startB = seriesB.start();
+		long endB = seriesB.end();
 		
 			
 		//equal
@@ -65,10 +65,10 @@ public class TemporalOrdering {
 	}
 	
 	// getters
-	public int getStreamA() {return _streamA; }
-	public int getStreamB() {return _streamB; }
-	public int getOrderA() {return _orderA; }
-	public int getOrderB() {return _orderB; }
+	public long getStreamA() {return _streamA; }
+	public long getStreamB() {return _streamB; }
+	public long getOrderA() {return _orderA; }
+	public long getOrderB() {return _orderB; }
 	public TemporalRelationEnum getRelation() { return _relationship;}
 	
 	public boolean equals(Object obj){

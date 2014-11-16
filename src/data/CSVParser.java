@@ -21,9 +21,9 @@ public class CSVParser implements Parser {
 		_fileName = dataSetParameterService.getFileName();
 	}
 
-	public TimeSeries[] loadDataSet() {
+	public DoubleTimeSeries[] loadDataSet() {
 		ArrayList<String[]> rawData = importData(_fileName);
-		TimeSeries[] timeSeriesData = splitIntoTimeSeries(rawData);
+		DoubleTimeSeries[] timeSeriesData = splitIntoTimeSeries(rawData);
 		System.out.println("Data set imported ");
 		timeSeriesData = computeZScore(timeSeriesData);
 		System.out.println("Data set z normalized ");
@@ -48,26 +48,26 @@ public class CSVParser implements Parser {
 		return readStreams;
 	}
 
-	public TimeSeries[] splitIntoTimeSeries(ArrayList<String[]> rawData) {
-		TimeSeries[] _outData = new TimeSeries[rawData.get(0).length];
+	public DoubleTimeSeries[] splitIntoTimeSeries(ArrayList<String[]> rawData) {
+		DoubleTimeSeries[] _outData = new DoubleTimeSeries[rawData.get(0).length];
 		for (int i = 0; i < rawData.get(0).length; i++) {
 			double[] seriesData = new double[rawData.size()];
 			for (int j = 0; j < rawData.size(); j++) {
 				seriesData[j] = Double.parseDouble(rawData.get(j)[i]);
 			}
-			_outData[i] = new TimeSeries(seriesData, i);
+			_outData[i] = new DoubleTimeSeries(seriesData, i);
 		}
 		return _outData;
 	}
 
 
-	public TimeSeries[] computeZScore(TimeSeries[] input) {
+	public DoubleTimeSeries[] computeZScore(DoubleTimeSeries[] input) {
 		// z-score 
 		//
 		// z-score = (x - mean ) / (standard deviation)
 		//
 		
-		TimeSeries[] normalized = new TimeSeries[input.length];
+		DoubleTimeSeries[] normalized = new DoubleTimeSeries[input.length];
 		
 
 		for (int i = 0; i < input.length; i++) {
@@ -93,7 +93,7 @@ public class CSVParser implements Parser {
 				values[j] = (values[j]- mean) / stdev;
 			}
 			
-			normalized[i] = new TimeSeries(values, i);
+			normalized[i] = new DoubleTimeSeries(values, i);
 		}
 
 		return normalized;

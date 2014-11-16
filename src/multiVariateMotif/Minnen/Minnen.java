@@ -1,11 +1,11 @@
 package multiVariateMotif.Minnen;
 
 import multiVariateMotif.MotifMiner;
-import data.TimeSeries;
+import data.DoubleTimeSeries;
 
 public class Minnen extends MotifMiner {
 
-	public void mineDataForMotifs(TimeSeries[] dataset) {
+	public void mineDataForMotifs(DoubleTimeSeries[] dataset) {
 		// TODO Auto-generated method stub
 		
 	}

@@ -6,11 +6,11 @@ import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Single;
 
 import multiVariateMotif.MotifMiner;
 import data.SingleDimensionalMotif;
-import data.TimeSeries;
+import data.DoubleTimeSeries;
 
 public class Balasubramanian extends MotifMiner{
 
-	public void mineDataForMotifs(TimeSeries[] dataset) {
+	public void mineDataForMotifs(DoubleTimeSeries[] dataset) {
 		//tunable parameters
 		// - neighborhood distance
 		

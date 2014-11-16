@@ -3,13 +3,13 @@ package multiVariateMotif.Balasubramanian;
 import java.util.ArrayList;
 
 import data.SingleDimensionalMotif;
-import data.TimeSeries;
+import data.DoubleTimeSeries;
 
 public class TimeStamp {
 	//store the all of the series for each of the time stamps here
-	private TimeSeries[] _subSeries;
+	private DoubleTimeSeries[] _subSeries;
 	
-	public TimeStamp(TimeSeries[] series){
+	public TimeStamp(DoubleTimeSeries[] series){
 		_subSeries = series;
 	}
 	
