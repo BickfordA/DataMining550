@@ -8,12 +8,20 @@ public class Sequence {
 	private ArrayList<Symbol> _sequence;
 	private long[] _timeStamps;
 	
-	public Sequence( ArrayList<Symbol> newSequence){
+	public Sequence( ArrayList<Symbol> newSequence, long[] timeStamps, int stream){
 		_sequence = newSequence;
+		_stream = stream;
+		_timeStamps = timeStamps;
 	}
 	
 	//getters
 	public ArrayList<Symbol> getSequence() { return _sequence; }
 	public long[] getTimeStamps(){ return _timeStamps; }
 	public int getStream(){ return _stream; }
+	
+	public int size(){return _sequence.size();}
+	public Symbol getSymbol(int i){ return _sequence.get(i);}
+	
+	public long start(){return _timeStamps[0]; }
+	public long end() {return _timeStamps[_timeStamps.length -1]; }
 }

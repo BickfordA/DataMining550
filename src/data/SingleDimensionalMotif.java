@@ -2,10 +2,11 @@ package data;
 
 public class SingleDimensionalMotif {
 
-	private DoubleTimeSeries _motif;
+	private Sequence _motif;
 	private int _stream;
+	private int _locations;
 	//this is used as a building block for the multidimensional motifs by 
-	public SingleDimensionalMotif(DoubleTimeSeries motif, int stream) {
+	public SingleDimensionalMotif(Sequence motif, int stream) {
 		_motif = motif;
 		_stream = stream;
 	}
@@ -15,7 +16,7 @@ public class SingleDimensionalMotif {
 		return _stream;
 	}
 	
-	public DoubleTimeSeries getTimeSeries()
+	public Sequence getTimeSeries()
 	{
 		return _motif;
 	}
