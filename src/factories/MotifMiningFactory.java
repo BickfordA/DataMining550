@@ -1,8 +1,8 @@
 package factories;
 
+
 import multiVariateMotif.MotifMiner;
 import multiVariateMotif.Balasubramanian.Balasubramanian;
-import multiVariateMotif.McGovern.McGovern;
 import multiVariateMotif.Minnen.Minnen;
 import services.TunableParameterService;
 
@@ -28,8 +28,6 @@ public class MotifMiningFactory {
 		{
 			case Balasubramanian:
 				return new Balasubramanian();
-			case McGovern:
-				return new McGovern();
 			case Minnen:
 				return new Minnen();
 			default:
