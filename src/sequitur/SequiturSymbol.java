@@ -1,4 +1,4 @@
-package sequitur;
+ package sequitur;
 
 /*
 This class is part of a Java port of Craig Nevill-Manning's Sequitur algorithm.
