@@ -165,18 +165,37 @@ public class Minnen extends MotifMiner {
 			//For each dimension 
 			
 			//hash the entries
-			HashMap<String, ArrayList<Integer>> collisionMap = new HashMap<String, ArrayList<Integer>>();
+			HashMap<char[], ArrayList<Integer>> collisionMap = new HashMap<char[], ArrayList<Integer>>();
 			//record the collisions
 			
 			//for each record
-				//create the key
+			Sequence[] currentDimension = data[dimension];
+			for(int i = 0 ; i < currentDimension.length; i ++){
+				char[] key = currentDimension[i].generateCharArray();
+				
+				if(collisionMap.containsKey(key)){
+					ArrayList<Integer> mapping =  collisionMap.get(key);
+					mapping.add(i);					
+				}else{
+					ArrayList<Integer> newColision =  new ArrayList<Integer>();
+					newColision.add(i);
+					collisionMap.put(key, newColision);
+				}
+				
+			}			
 			
-				//insert it into the hasmap
-			
-			
-			//iteratte through the map
-			//and record all of the hit combinations
-			
+			for(ArrayList<Integer> collisions: collisionMap.values()){
+				if(collisions.size() > 1){
+					//more than one sequence matched
+					//record each pairwise collision
+					for(int i = 0 ; i < collisions.size(); i++){
+						for(int j = i ; j < collisions.size(); i++){
+							//record all of the hit combinations
+							matrix.incrementAt(i, j);
+						}
+					}
+				}
+			}
 		}
 	}
 }

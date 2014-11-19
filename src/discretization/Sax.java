@@ -66,10 +66,5 @@ public class Sax {
 		DoubleTimeSeries retVal  = new DoubleTimeSeries(tsValues, timeSeries.getStream());
 		return retVal;
 	}
-	
-	
-	
-	
-	
 
 }

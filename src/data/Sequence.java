@@ -24,4 +24,15 @@ public class Sequence {
 	
 	public long start(){return _timeStamps[0]; }
 	public long end() {return _timeStamps[_timeStamps.length -1]; }
+	
+	public char[] generateCharArray()
+	{
+		char[] charRepresentation = new char[_sequence.size()] ;
+		
+		for(int i = 0 ; i < _sequence.size(); i++){
+			charRepresentation[i] = (char) _sequence.get(i).getSymbol();
+		}
+		
+		return charRepresentation;
+	}
 }

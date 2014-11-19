@@ -11,4 +11,5 @@ public class Symbol {
 	}
 	
 	public int getSymbol() {return _symbol;}
+	
 }
