@@ -65,4 +65,29 @@ public class TunableParameterService {
 		return _saxAlphabet;
 	}
 
+	public int getSubSequenceLength() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int getMaxProjectionIterations() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int getInitialProjectionLength() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public int getDimensionalRelevanceThreshold() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	public long randomNumberSeed() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }

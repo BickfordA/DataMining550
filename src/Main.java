@@ -17,11 +17,6 @@ public class Main {
 		Parser csvParser = new CSVParser();
 		DoubleTimeSeries[] ts = csvParser.loadDataSet();
 		
-		AlphabetFactory alphabetFactory = new AlphabetFactory();
-		Alphabet alphabet = alphabetFactory.getAlphabet();
-		
-		
-		
 		MotifMiningFactory mineFactory = new MotifMiningFactory();
 		MotifMiner currentMiner = mineFactory.getMotifMiner();
 		

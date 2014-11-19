@@ -7,14 +7,25 @@ import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Single;
 import multiVariateMotif.MotifMiner;
 import data.SingleDimensionalMotif;
 import data.DoubleTimeSeries;
+import discretization.Alphabet;
+import factories.AlphabetFactory;
 
 public class Balasubramanian extends MotifMiner{
 
-	public void mineDataForMotifs(DoubleTimeSeries[] dataset) {
+	public void mineDataForMotifs(DoubleTimeSeries[] dataset){
 		//tunable parameters
 		// - neighborhood distance
 		
-		//divide the multi variate timeseries into time stamps (subsections)
+		try{
+			//divide the multi variate timeseries into time stamps (subsections)
+			AlphabetFactory alphabetFactory = new AlphabetFactory();
+			Alphabet alphabet = alphabetFactory.getAlphabet();
+			
+		}catch (ClassNotFoundException exeption){
+			System.out.println(exeption.getMessage());
+			return;
+		}
+		
 		
 
 		
