@@ -43,5 +43,21 @@ public class DoubleTimeSeries {
 		long[] subRange = Arrays.copyOfRange(_timeStamps, start, stop);
 		return new DoubleTimeSeries(subData,  subRange, _stream);
 	}
+	
+	public Double distance(DoubleTimeSeries other){
+		double distance = Integer.MAX_VALUE;
+		
+		if(this.size() ==  other.size()){
+			distance = 0;
+			for(int i = 0 ; i < this.size(); i ++){
+				double temp = this._data[i] - other._data[i];
+				distance += (temp *temp);
+			}
+			//could do this to make it euclidean
+			//distance = Math.sqrt(distance);
+		}
+		
+		return distance;
+	}
 }
 

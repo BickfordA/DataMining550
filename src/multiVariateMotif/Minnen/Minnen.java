@@ -88,18 +88,30 @@ public class Minnen extends MotifMiner {
 		
 		CollisionMatrix collision = generateCollisionMatrix(timeSequences, _initialProjectionLength );
 		
-		
+		ArrayList<CollisionPair> collisionsOfMaxSize = collision.getMaxCollisions(); 
 		
 		//Enumerate the motifs based on the collision matrix
 		
+		for(CollisionPair pair: collisionsOfMaxSize){
 			// Find the best Collision matrix
+			//find the pair with the lowest distance
+			int idxA = pair.getA();
+			int idxB = pair.getB();
+			double[] distDim  = new double[timeFrames.length];
+			for(int i = 0 ; i < distDim.length; i++){
+				distDim[i] = timeFrames[i][idxA].distance(timeFrames[i][idxB]);
+			}
 		
+			// determine the relevant dimensions
+			
+			//(AAHAHAHAHHAAAAAAAAAAAAAA!!!!!!)
+			
 			//Estimate the nieghborhood radius
 		
 			//Locate all other occurences of this motif 
 		
 			// Remove subsequences that would constitute trivaial matches with the occurences of this motif
-		
+		}
 		
 		
 	}
@@ -114,6 +126,7 @@ public class Minnen extends MotifMiner {
 		
 		//TODO: need to take the min of the maX iterations and the number of dimension combinations
 		for(int i =0 ; i <  _maxProjectionIterations; i++){
+			selectedDimensions = setToValue(selectedDimensions, false);
 			selectedDimensions = makeRandomSelection(selectedDimensions, projSize);
 		
 			//project the selection
