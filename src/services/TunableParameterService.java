@@ -90,4 +90,9 @@ public class TunableParameterService {
 		return 0;
 	}
 
+	public int getRandomDistributionSampleSize() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
 }
