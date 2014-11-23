@@ -1,32 +1,62 @@
 package multiVariateMotif.Balasubramanian;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+
+import services.TunableParameterService;
 
 import com.sun.xml.internal.bind.v2.runtime.unmarshaller.XsiNilLoader.Single;
 
 import multiVariateMotif.MotifMiner;
+import data.Sequence;
 import data.SingleDimensionalMotif;
 import data.DoubleTimeSeries;
 import discretization.Alphabet;
+import discretization.Sax;
 import factories.AlphabetFactory;
 
 public class Balasubramanian extends MotifMiner{
 
+	private int _timeStampLength;
+	
+	public Balasubramanian(){
+		Balasubramanian(TunableParameterService.getInstance());
+	}
+
+	public void Balasubramanian(TunableParameterService params){
+		_timeStampLength = params.getTimeStampLength();
+	}
+	
 	public void mineDataForMotifs(DoubleTimeSeries[] dataset){
 		//tunable parameters
 		// - neighborhood distance
 		
+		TimeStamp[] timeStamps = new TimeStamp[dataset[0].size()/_timeStampLength ];
 		try{
 			//divide the multi variate timeseries into time stamps (subsections)
 			AlphabetFactory alphabetFactory = new AlphabetFactory();
 			Alphabet alphabet = alphabetFactory.getAlphabet();
 			
+			Sax saxer = new Sax();
+			
+			int count = 0;
+			for(int i = 0; i < dataset[0].size() - _timeStampLength; i += _timeStampLength){
+				
+				Sequence subSequence[] = new Sequence[dataset.length];
+				for(int j = 0; j < dataset.length; j ++){
+					DoubleTimeSeries subTs = new DoubleTimeSeries(Arrays.copyOfRange(dataset[j].getTimeSeries(),i, i +_timeStampLength), Arrays.copyOfRange(dataset[j].getTimeStamps(), i, i +_timeStampLength) ,j);
+					subSequence[j] = saxer.dexcritizeTimeSeries( subTs,  alphabet);
+				}
+				timeStamps[count] = new TimeStamp(subSequence);
+				count ++;
+			}
+
 		}catch (ClassNotFoundException exeption){
 			System.out.println(exeption.getMessage());
 			return;
 		}
-		
-		
+
+		generatMotifBagsAndOrderings(10 , timeStamps);
 
 		
 	}

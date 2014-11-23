@@ -25,6 +25,10 @@ public class Sequence {
 	public long start(){return _timeStamps[0]; }
 	public long end() {return _timeStamps[_timeStamps.length -1]; }
 	
+	public void setTimeStamps(long[] stamps){
+		_timeStamps = stamps;
+	}
+	
 	public char[] generateCharArray()
 	{
 		char[] charRepresentation = new char[_sequence.size()] ;

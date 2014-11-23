@@ -50,7 +50,7 @@ public class Minnen extends MotifMiner {
 		
 		//Collect all subsequences of length w from the time series (like time stamps )
 		int idx = 0;
-		for (int i = 0; i < dataset[0].size(); i += _subSequenceLength){
+		for (int i = 0; i < dataset[0].size()-_subSequenceLength; i += _subSequenceLength){
 			for(int j = 0; j < dataset.length; j ++){
 				timeFrames[j][idx] = dataset[j].cloneSubSection(i, i+ _subSequenceLength - 1);
 			}

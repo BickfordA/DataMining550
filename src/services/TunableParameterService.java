@@ -19,7 +19,18 @@ public class TunableParameterService {
     int _iSaxBaseCardinality;
     int _iSaxWordLength;
 	
-	//private final .....
+    
+    //Minnen variables
+    private final int _minnenSequenceLength;
+    private final int _maxProjectionIterations;
+    private final int _intitialProjectionLength;
+    private final int _dimensionalRelevanceThreshold;
+    private final int _randomNumberSeed;
+    private final int _randomDistributiuonSampleSize;
+    
+    //Balasubramanian variables
+    private  int _timeStampLength;
+    
 	
 	private TunableParameterService()
 	{
@@ -27,10 +38,22 @@ public class TunableParameterService {
 		_dataSet = DataSetSourceEnum.Electric;
 		_saxAlphabet = AlphabetEnum.NormalAlphabet;
 		
-		_algorithm = MotifMiningAlgorithmEnum.Balasubramanian;
+		_algorithm = MotifMiningAlgorithmEnum.Minnen;
 		
 		
+		_iSaxWordLength = 1;
+		_iSaxBaseCardinality = 4;
 		
+		//minnen init
+		_minnenSequenceLength = 10;
+		_maxProjectionIterations = 1000;
+		_intitialProjectionLength = 100;
+		_dimensionalRelevanceThreshold = 1 ;
+		_randomNumberSeed = 10;
+		_randomDistributiuonSampleSize = 20;
+		
+		//Balla....
+		_timeStampLength = 10;
 	}
 	
 	//getters for the values 
@@ -66,33 +89,31 @@ public class TunableParameterService {
 	}
 
 	public int getSubSequenceLength() {
-		// TODO Auto-generated method stub
-		return 0;
+		return _minnenSequenceLength;
 	}
 
 	public int getMaxProjectionIterations() {
-		// TODO Auto-generated method stub
-		return 0;
+		return _maxProjectionIterations;
 	}
 
 	public int getInitialProjectionLength() {
-		// TODO Auto-generated method stub
-		return 0;
+		return _intitialProjectionLength;
 	}
 
 	public int getDimensionalRelevanceThreshold() {
-		// TODO Auto-generated method stub
-		return 0;
+		return _dimensionalRelevanceThreshold;
 	}
 
 	public long randomNumberSeed() {
-		// TODO Auto-generated method stub
-		return 0;
+		return _randomNumberSeed;
 	}
 
 	public int getRandomDistributionSampleSize() {
-		// TODO Auto-generated method stub
-		return 0;
+		return _randomDistributiuonSampleSize;
+	}
+
+	public int getTimeStampLength() {
+		return _timeStampLength;
 	}
 
 }

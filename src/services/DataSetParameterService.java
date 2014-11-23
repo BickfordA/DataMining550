@@ -18,7 +18,7 @@ public class DataSetParameterService
 			_description = "Social Media Buzz";
 			break;
 		case Electric:
-			_fileName = "";
+			_fileName = "DataSets/TestSub.txt";
 			_description = "Electric Consumption";
 			break;
 		case Flights:

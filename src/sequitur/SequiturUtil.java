@@ -38,7 +38,7 @@ public class SequiturUtil {
 			
 			for(int loc: motifLocations){
 			//create a new motif for each entry (collapse these down later?) aaaahhhh!!!
-				long[] motifPeriod = Arrays.copyOfRange(locations, loc , symbols.size());
+				long[] motifPeriod = Arrays.copyOfRange(locations, loc , loc+symbols.size());
 				Sequence newSeq = new Sequence(symbols, motifPeriod, seq.getStream());
 				SingleDimensionalMotif newMotif = new SingleDimensionalMotif( newSeq, seq.getStream());
 				motifsFound.add(newMotif);

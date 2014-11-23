@@ -35,7 +35,7 @@ public class Sax {
 		
 		for(double value: values){
 			int rep = 0;
-			while(value < cuts[rep] && rep < cuts.length){
+			while(rep < cuts.length && value < cuts[rep] ){
 				rep ++;
 			}
 			Symbol repSymbol = new Symbol(rep);
