@@ -19,6 +19,7 @@ public class Balasubramanian extends MotifMiner{
 
 	private int _timeStampLength;
 	
+	
 	public Balasubramanian(){
 		Balasubramanian(TunableParameterService.getInstance());
 	}
@@ -55,15 +56,18 @@ public class Balasubramanian extends MotifMiner{
 			System.out.println(exeption.getMessage());
 			return;
 		}
-
+		System.out.println("looking for motif bags");
 		generatMotifBagsAndOrderings(10 , timeStamps);
-
+		System.out.println("Finished Looking");
 		
 	}
 	
-	public void generatMotifBagsAndOrderings(int neighborhoodDistance, TimeStamp[] timeStamps)
+	public MultiVariateMotifCounts generatMotifBagsAndOrderings(int neighborhoodDistance, TimeStamp[] timeStamps)
 	{
-		for(int i = 0;  i < timeStamps.length; i += neighborhoodDistance ){
+		MultiVariateMotifCounts motifs = new MultiVariateMotifCounts();
+		System.out.println("Time stamp count: "+ timeStamps.length);
+		for(int i = 0;  i < timeStamps.length-neighborhoodDistance; i += neighborhoodDistance ){
+			System.out.println("\n\nTime stamp: "+ i);
 			TimeStamp[] currentNeighborHood = new TimeStamp[neighborhoodDistance];
 			
 			//pull out the neighborhood 
@@ -72,45 +76,59 @@ public class Balasubramanian extends MotifMiner{
 			}
 			
 			ArrayList<SingleDimensionalMotif> currentNeighborSet = new ArrayList<SingleDimensionalMotif>();
+			System.out.println("Neighborhood size: " + currentNeighborHood.length);
 			//get the motifs for each time stamp
 			for(TimeStamp s: currentNeighborHood){
 				ArrayList<SingleDimensionalMotif> foundMotifs = s.getSubMotifs();
 				//add the unique ones to the list found in this "bag"
+				System.out.println("Found :" + foundMotifs.size()+ " motifs");
 				for(SingleDimensionalMotif m : foundMotifs){
+					if(m.length() < 5) continue;
 					if(!currentNeighborSet.contains(m)){
 						currentNeighborSet.add(m);
 					}
 				}
 			}
 			
+			System.out.println("finished finding motifs");
 			//generate the powerset for the currentNeighborSet
 			ArrayList<ArrayList<SingleDimensionalMotif>> neighborhoodMotifPowerSet = generateMotifBagPowerSet(currentNeighborSet);
 			
-			ArrayList<ArrayList<SingleDimensionalMotif>>  motifBag = new ArrayList<ArrayList<SingleDimensionalMotif>>();
-			ArrayList<ArrayList<TemporalOrdering> > motifOrdering = new ArrayList<ArrayList<TemporalOrdering> >();
-			
+//			ArrayList<ArrayList<SingleDimensionalMotif>>  motifBag = new ArrayList<ArrayList<SingleDimensionalMotif>>();
+//			ArrayList<ArrayList<TemporalOrdering> > motifOrdering = new ArrayList<ArrayList<TemporalOrdering> >();
+			System.out.println("Powerset size: " + neighborhoodMotifPowerSet.size());
 			for(ArrayList<SingleDimensionalMotif> set: neighborhoodMotifPowerSet){
 				//make sure that the motifs don't overlap (in the same single variate time stream)
 				if(noOverLappingMotifs(set)){
-					motifBag.add(set);
-					ArrayList<TemporalOrdering> tempOrdering = getTemporalOrderings(set);
+					TemporalOrderingTuple to = new TemporalOrderingTuple(getTemporalOrderings(set));
+					MultivariateMotif foundMotif = new MultivariateMotif(set, to);
 					
-					if(!motifOrdering.contains(tempOrdering)){
-							motifOrdering.add(tempOrdering);
-					}
+					motifs.append(foundMotif);
+//					motifBag.add(set);
+//					ArrayList<TemporalOrdering> tempOrdering = getTemporalOrderings(set);
+//					
+//					if(!motifOrdering.contains(tempOrdering)){
+//							motifOrdering.add(tempOrdering);
+//					}
 				}
 			}
 		}
+		return motifs;
 	}
 	
 	public ArrayList<ArrayList<SingleDimensionalMotif> > generateMotifBagPowerSet( ArrayList<SingleDimensionalMotif> motifs)
 	{
+		System.out.println("finding powerset");
 		ArrayList<ArrayList<SingleDimensionalMotif> > powerSet = new ArrayList<ArrayList<SingleDimensionalMotif> >();
 		
 		long powerSetSize = (long) Math.pow(2, motifs.size());
-		
+		//System.out.println("motif count "+motifs.size());
+		//System.out.println("finding powerset, size: " + powerSetSize);
 		//don't include the empty set ~ (not really power set) start at 1
 		for(int i = 1 ; i < powerSetSize; i ++ ){
+			if( i % (powerSetSize/ 4) == 0){
+				System.out.print( i / (powerSetSize/ 4) * 25  + " percent, " );
+			}
 			ArrayList<SingleDimensionalMotif> set = new ArrayList<SingleDimensionalMotif>();
 			//each i'th bit corresponds to a item in the original set
 			for(int j = 0 ; j < motifs.size(); j++ ){
@@ -120,7 +138,9 @@ public class Balasubramanian extends MotifMiner{
 					set.add(motifs.get(j));
 				}
 			}
+			powerSet.add(set);
 		}
+		System.out.println("100 percent");
 		return powerSet;
 	}
 	

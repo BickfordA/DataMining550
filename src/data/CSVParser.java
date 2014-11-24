@@ -53,7 +53,15 @@ public class CSVParser implements Parser {
 		for (int i = 0; i < rawData.get(0).length; i++) {
 			double[] seriesData = new double[rawData.size()];
 			for (int j = 0; j < rawData.size(); j++) {
-				seriesData[j] = Double.parseDouble(rawData.get(j)[i]);
+				try{
+					seriesData[j] = Double.parseDouble(rawData.get(j)[i]);
+				}
+				catch(Exception execption){
+					System.out.println("Parse Error: " + execption.getMessage());
+					System.out.println("line: "+ j + " column: " + i);
+					System.out.println(rawData.get(j)[i]);
+					System.exit(1);
+				}
 			}
 			_outData[i] = new DoubleTimeSeries(seriesData, i);
 		}

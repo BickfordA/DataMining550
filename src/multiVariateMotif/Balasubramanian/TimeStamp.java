@@ -26,6 +26,7 @@ public class TimeStamp {
 			ArrayList<SingleDimensionalMotif>  seriesMotifs =  sq.getSequiturMotifs(currentSequence);
 			foundMotifs.addAll(seriesMotifs);
 		}
+		System.gc();
 		
 		return foundMotifs;
 	}

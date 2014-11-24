@@ -20,5 +20,7 @@ public class Main {
 		MotifMiner currentMiner = mineFactory.getMotifMiner();
 		System.out.println("created mining algorithm");
 		currentMiner.mineDataForMotifs(ts);
+		
+		System.out.println("finished");
 	}
 }

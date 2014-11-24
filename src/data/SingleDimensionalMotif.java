@@ -47,5 +47,8 @@ public class SingleDimensionalMotif {
 		return _motif.end();
 	}
 	
+	public long length(){
+		return _motif.end() - _motif.start();
+	}
 	
 }

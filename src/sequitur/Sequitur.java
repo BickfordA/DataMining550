@@ -18,7 +18,7 @@ You should have received a copy of the GNU General Public License
 along with this program; if not, write to the Free Software
 Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
-/*
+
 import java.awt.*;
 
 public class Sequitur extends java.applet.Applet {
@@ -46,12 +46,15 @@ public class Sequitur extends java.applet.Applet {
     Rule.numRules = 0;
     SequiturSymbol.theDigrams.clear();
     for (i=0;i<text.getText().length();i++){
-      firstRule.last().
-	insertAfter(new terminal(text.getText().
-				 charAt(i)));
+      firstRule.last().insertAfter(new Terminal(text.getText().charAt(i), i));
       firstRule.last().p.check();
     }
-    rules.setText(firstRule.getRules());
+    String s = new String();
+    for(String str: firstRule.getAllStrings()){
+    	s += str + '\n';
+    }
+    rules.setText(s + '\n' + firstRule.getRules());
+    //rules.setText(firstRule.getRules());
   }
 
   public boolean action(Event evt,Object arg){
@@ -104,4 +107,4 @@ public class Sequitur extends java.applet.Applet {
     buttonPanel.add(submit);
    }
 }
-*/
+

@@ -8,9 +8,8 @@ public class TemporalOrderingTuple {
 	
 	ArrayList<TemporalOrdering> _tuple;
 	
-	public void TemporalOrdering(ArrayList<TemporalOrdering> tuple)
-	{
-		_tuple = tuple;
+	public TemporalOrderingTuple(ArrayList<TemporalOrdering> temporalOrderings) {
+		_tuple = temporalOrderings;
 	}
 	
 	public ArrayList<TemporalOrdering> getTuple()

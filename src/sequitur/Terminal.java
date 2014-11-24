@@ -20,7 +20,7 @@ Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 */
 
 public class Terminal extends SequiturSymbol implements Cloneable{
-
+	
   Terminal(int theValue, int originalPosition){
     value = theValue;
     this.originalPosition = originalPosition;

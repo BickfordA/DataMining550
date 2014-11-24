@@ -28,6 +28,7 @@ import java.util.Vector;
 import java.util.Hashtable;
 
 
+
 public class Rule{
 
   // Guard symbol to mark beginning
@@ -55,8 +56,11 @@ public class Rule{
 
   public int index;
   
-  protected static Set<Integer> indexes = new TreeSet<Integer>();
+  protected Set<Integer> indexes = new TreeSet<Integer>();
 
+//  public static void resetIndexes(){
+//	  indexes.clear();
+//  }
 
   Rule(){
     number = numRules;
@@ -100,30 +104,30 @@ public class Rule{
       text.append(processedRules);
       text.append(" -> ");
       for (sym=currentRule.first();(!sym.isGuard());sym=sym.n){
-	if (sym.isNonTerminal()){
-	  referedTo = ((NonTerminal)sym).r;
-	  if ((rules.size() > referedTo.index) &&
-	      ((Rule)rules.elementAt(referedTo.index) ==
-	       referedTo)){
-	    index = referedTo.index;
-	  }else{
-	    index = rules.size();
-	    referedTo.index = index;
-	    rules.addElement(referedTo);
-	  }
-	  text.append('R');
-	  text.append(index);
-	}else{
-	  if (sym.value == ' '){
-	    text.append('_');
-	  }else{
-	    if (sym.value == '\n'){
-	      text.append("\\n");
-	    }else
-	      text.append((char)sym.value);
-	  }
-	}
-	text.append(' ');
+		if (sym.isNonTerminal()){
+		  referedTo = ((NonTerminal)sym).r;
+		  if ((rules.size() > referedTo.index) &&
+		      ((Rule)rules.elementAt(referedTo.index) ==
+		       referedTo)){
+		    index = referedTo.index;
+		  }else{
+		    index = rules.size();
+		    referedTo.index = index;
+		    rules.addElement(referedTo);
+		  }
+		  text.append('R');
+		  text.append(index);
+		}else{
+		  if (sym.value == ' '){
+		    text.append('_');
+		  }else{
+		    if (sym.value == '\n'){
+		      text.append("\\n");
+		    }else
+		      text.append((char)sym.value);
+		  }
+		}
+		text.append(' ');
       }
       text.append('\n');
       processedRules++;
@@ -136,23 +140,38 @@ public class Rule{
 	{
 		ArrayList<SequiturMotif> ruleArray = new ArrayList<SequiturMotif>();
 		
-
-	    Vector rules = new Vector(numRules);
+		int processedRules =0;
+		Vector<Rule> rules = new Vector<Rule>(numRules);
 	    Rule currentRule;
 	    Rule referedTo;
 	    SequiturSymbol sym;
-	    int index;
-	    int processedRules = 0;
-	    StringBuffer text = new StringBuffer();
-	    int charCounter = 0;
-
-	    text.append("Usage\tRule\n");
+	    
 	    rules.addElement(this);
-	    while (processedRules < rules.size()){
-	    	ArrayList<Character> charRule = getCharRepresentation();
-	    	int[] indicies = getIndexes();
+	    while (processedRules < rules.size() ){
+	    	
+	    	currentRule  = (Rule)rules.elementAt(processedRules);
+	    	ArrayList<Character> charRule = currentRule.getCharRepresentation();
+	    	int[] indicies = currentRule.getIndexes();
+	    	
+	    	int symPos = 0;
+	    	for (sym=currentRule.first(); (!sym.isGuard()); sym=sym.n){
+	    		if (sym.isNonTerminal()){
+	    		  referedTo = ((NonTerminal)sym).r;
+	    		  if ((rules.size() > referedTo.index) && ((Rule)rules.elementAt(referedTo.index) == referedTo)){
+	    			  index = referedTo.index;
+	    		  }else{
+	    		    index = rules.size();
+	    		    referedTo.index = index;
+	    		    rules.addElement(referedTo);
+	    		  }
+	    		  for(int idx: indicies){
+		    			 referedTo.addIndex(idx + symPos);
+	    		  }
+	    		}
+	    		symPos ++;
+	    	}
 	    	ruleArray.add(new SequiturMotif( indicies, charRule));
-	    	processedRules++;
+	    	processedRules++; 
 	    }
 		
 		return ruleArray;
@@ -174,17 +193,80 @@ public class Rule{
 	{
 		ArrayList<Character> chars = new ArrayList<Character>();
 		
+		Vector<Rule> rules = new Vector<Rule>(numRules);
+		
 		SequiturSymbol sym;
 		Rule referedTo;
+		int symCount = 0;
+		
+		
 		for(sym = this.first(); (!sym.isGuard()); sym = sym.n){
+//			System.out.println((int)sym.value);
 			if(sym.isNonTerminal()){
+				//System.out.print(symCount+ " "  );
 				referedTo = ((NonTerminal)sym).r;
 				chars.addAll(referedTo.getCharRepresentation());
+//				for(Character c: chars){
+//					System.out.print((int)c);
+//				}
+//				System.out.println();
 			}else{
 				chars.add((char) sym.value);
 			}
+			symCount ++;
 		}
 		return chars;
 	}
+	
+	public ArrayList<String> getAllStrings()
+	{
+		ArrayList<String> records = new ArrayList<String>();
+		
+		int processedRules =0;
+		Vector<Rule> rules = new Vector<Rule>(numRules);
+	    Rule currentRule;
+	    Rule referedTo;
+	    SequiturSymbol sym;
+	    
+	    rules.addElement(this);
+	    while (processedRules < rules.size()){
+	    	String record = new String();
+	    	
+	    	currentRule  = (Rule)rules.elementAt(processedRules);
+	    	ArrayList<Character> charRule = currentRule.getCharRepresentation();
+	    	int[] indicies = currentRule.getIndexes();
+	    	
+	    	int symPos = 0;
+	    	for (sym=currentRule.first(); (!sym.isGuard()); sym=sym.n){
+	    		if (sym.isNonTerminal()){
+	    		  referedTo = ((NonTerminal)sym).r;
+	    		  if ((rules.size() > referedTo.index) && ((Rule)rules.elementAt(referedTo.index) == referedTo)){
+	    			  index = referedTo.index;
+	    		  }else{
+	    		    index = rules.size();
+	    		    referedTo.index = index;
+	    		    rules.addElement(referedTo);
+	    		  }
+	    		  for(int idx: indicies){
+		    			 referedTo.addIndex(idx + symPos);
+	    		  }
+	    		}
+	    		symPos ++;
+	    	}
+	    	
+	    	for(int i: indicies){
+	    		record += i + " ";
+	    	}
+	    	//record += currentRule.index;
+	    	for(Character c: charRule){
+	    		record += c;
+	    	}
+	    	records.add(record);
+	    	processedRules++; 
+	    }
+
+		return records;
+	}
+	
 
 }

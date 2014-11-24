@@ -12,27 +12,40 @@ public class SequiturUtil {
 	public ArrayList<SingleDimensionalMotif> getSequiturMotifs(Sequence seq)
 	{
 		ArrayList<SingleDimensionalMotif> motifsFound =  new ArrayList<SingleDimensionalMotif>();
-		
+
+	    Rule.numRules = 0;
+	    SequiturSymbol.theDigrams.clear();
+	    
 		Rule firstRule = new Rule();
 		
 		long[] locations = seq.getTimeStamps();
 		
+		System.out.print(seq.size() + "  - ");
 		for(int i = 0 ; i < seq.size(); i ++){
 			//load the sequence
-			char charRep = (char) seq.getSymbol(i).getSymbol(); 
+			//nasty zeros break everything, i think they may be interpreted as null ?
+			char charRep =(char) (seq.getSymbol(i).getSymbol() + 1); 
+			System.out.print(seq.getSymbol(i).getSymbol());
+			
 			firstRule.last().insertAfter(new Terminal(charRep, i));
 			firstRule.last().p.check();
 		}
 		
+//		System.out.print(" motifs found -");
+//		for(String s: firstRule.getAllStrings()){
+//			System.out.println( s); //int chars dont show up .. not worth much 
+//		}
 		//get the rules
 		ArrayList<SequiturMotif> motifs  = firstRule.getRuleList();
+		System.out.println("motifs pulled out of Sequitur");
+		
 		
 		//convert to thesingle variate motif representation
 		for(SequiturMotif sm: motifs){
 			ArrayList<Character> charMotif = sm.getChars();
 			ArrayList<Symbol> symbols = new ArrayList<Symbol>();
 			for(Character c: charMotif){
-				symbols.add(new Symbol((int) c));
+				symbols.add(new Symbol((int) c - 1));
 			}
 			int[] motifLocations = sm.getIndicies();
 			
@@ -44,7 +57,7 @@ public class SequiturUtil {
 				motifsFound.add(newMotif);
 			}
 		}
-
+		//System.out.println("motifs found");
 		return motifsFound;
 	}
 	

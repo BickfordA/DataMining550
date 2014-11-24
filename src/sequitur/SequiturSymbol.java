@@ -125,18 +125,23 @@ public abstract class SequiturSymbol{
    */
 
   public boolean check(){
-    
-    SequiturSymbol found;
 
-    if (n.isGuard())
-      return false;
+
+    if (n.isGuard()){
+    	//i am the rule
+    	return false;
+    }
+    
     if (!theDigrams.containsKey(this)){
-      found = (SequiturSymbol)theDigrams.put(this,this);
+      theDigrams.put(this,this);
       return false;
     }
-    found = (SequiturSymbol)theDigrams.get(this);
+
+    SequiturSymbol found = (SequiturSymbol)theDigrams.get(this);
+    
     if (found.n != this)
       match(this,found);
+    
     return true;
   }
 
@@ -148,11 +153,12 @@ public abstract class SequiturSymbol{
     
 	r.addIndex(this.originalPosition);
 	  
-	cleanUp();
-    n.cleanUp();
+	this.cleanUp();
+    this.n.cleanUp();
+    
     NonTerminal nt = new NonTerminal(r);
     nt.originalPosition = this.originalPosition;
-    p.insertAfter(nt);
+    this.p.insertAfter(nt);
     if (!p.check())
       p.n.check();
   }
@@ -163,33 +169,34 @@ public abstract class SequiturSymbol{
   
   public void match(SequiturSymbol newD,SequiturSymbol matching){
     
-    Rule r;
-    SequiturSymbol first,second,dummy;
+    Rule rule;
+    SequiturSymbol first,second;
     
     if (matching.p.isGuard() && 
         matching.n.n.isGuard()){
       
       // reuse an existing rule
       
-      r = ((Guard)matching.p).r;
-      newD.substitute(r);
+      rule = ((Guard)matching.p).r;
+      newD.substitute(rule);
     }else{
       
       // create a new rule
       
-      r = new Rule();
+      rule = new Rule();
+      
       try{
         first = (SequiturSymbol)newD.clone();
         second = (SequiturSymbol)newD.n.clone();
-        r.theGuard.n = first;
-        first.p = r.theGuard;
+        rule.theGuard.n = first;
+        first.p = rule.theGuard;
         first.n = second;
         second.p = first;
-        second.n = r.theGuard;
-        r.theGuard.p = second;
+        second.n = rule.theGuard;
+        rule.theGuard.p = second;
 
-        matching.substitute(r);
-        newD.substitute(r);
+        matching.substitute(rule);
+        newD.substitute(rule);
 
         // Bug fix (21.8.2012): moved the following line
         // to occur after substitutions (see sequitur_simple.cc)
@@ -202,9 +209,8 @@ public abstract class SequiturSymbol{
     
     // Check for an underused rule.
     
-    if (r.first().isNonTerminal() && 
-        (((NonTerminal)r.first()).r.count == 1))
-      ((NonTerminal)r.first()).expand();
+    if (rule.first().isNonTerminal() && (((NonTerminal)rule.first()).r.count == 1))
+      ((NonTerminal)rule.first()).expand();
   }
   
   /**
@@ -231,5 +237,9 @@ public abstract class SequiturSymbol{
   public boolean equals(Object obj){
     return ((value == ((SequiturSymbol)obj).value) &&
             (n.value == ((SequiturSymbol)obj).n.value));
+  }
+  
+  public String toString() {
+	    return "SAXSymbol [value=" + value + ", p=" + p + ", n=" + n + "]";
   }
 }
