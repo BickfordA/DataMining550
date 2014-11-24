@@ -9,6 +9,8 @@ import data.Symbol;
 
 public class SequiturUtil {
 	
+	private final static int _minSingleVarMotifSize = 4;
+	
 	public ArrayList<SingleDimensionalMotif> getSequiturMotifs(Sequence seq)
 	{
 		ArrayList<SingleDimensionalMotif> motifsFound =  new ArrayList<SingleDimensionalMotif>();
@@ -20,12 +22,12 @@ public class SequiturUtil {
 		
 		long[] locations = seq.getTimeStamps();
 		
-		System.out.print(seq.size() + "  - ");
+		//System.out.print(seq.size() + "  - ");
 		for(int i = 0 ; i < seq.size(); i ++){
 			//load the sequence
 			//nasty zeros break everything, i think they may be interpreted as null ?
 			char charRep =(char) (seq.getSymbol(i).getSymbol() + 1); 
-			System.out.print(seq.getSymbol(i).getSymbol());
+			//System.out.print(seq.getSymbol(i).getSymbol());
 			
 			firstRule.last().insertAfter(new Terminal(charRep, i));
 			firstRule.last().p.check();
@@ -37,11 +39,12 @@ public class SequiturUtil {
 //		}
 		//get the rules
 		ArrayList<SequiturMotif> motifs  = firstRule.getRuleList();
-		System.out.println("motifs pulled out of Sequitur");
+		//System.out.println("motifs pulled out of Sequitur");
 		
 		
 		//convert to thesingle variate motif representation
 		for(SequiturMotif sm: motifs){
+			if(sm.size() < _minSingleVarMotifSize) continue;
 			ArrayList<Character> charMotif = sm.getChars();
 			ArrayList<Symbol> symbols = new ArrayList<Symbol>();
 			for(Character c: charMotif){

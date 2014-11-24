@@ -19,5 +19,6 @@ public class SequiturMotif {
 		return _indicies;
 	}
 	
+	public int size() { return _motifChars.size();}
 	
 }

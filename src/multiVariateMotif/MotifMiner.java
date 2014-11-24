@@ -6,7 +6,7 @@ import data.*;
 
 public abstract class MotifMiner 
 {
-	protected List<MulitDimensionalMotif> _motifs;
+	protected List<MultiDimensionalMotif> _motifs;
 	
 	public abstract void mineDataForMotifs(DoubleTimeSeries[] dataset);
 	

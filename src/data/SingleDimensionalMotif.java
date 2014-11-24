@@ -51,4 +51,22 @@ public class SingleDimensionalMotif {
 		return _motif.end() - _motif.start();
 	}
 	
+	public boolean equals(Object other){
+		boolean equals = false;
+		if(other instanceof SingleDimensionalMotif ){
+			SingleDimensionalMotif otherMotif = (SingleDimensionalMotif) other;
+			
+			if(_motif.size() == otherMotif.getTimeSeries().size()){
+				equals = true;
+			
+				for(int i = 0; i < _motif.size(); i++){
+					equals &= (_motif.getSymbol(i).getSymbol() == otherMotif.getTimeSeries().getSymbol(i).getSymbol());
+				}
+				
+				equals &= _stream == otherMotif._stream;
+			}
+		}
+		return equals;
+	}
+	
 }
