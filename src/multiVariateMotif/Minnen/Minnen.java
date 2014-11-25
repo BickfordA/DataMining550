@@ -64,7 +64,7 @@ public class Minnen extends MotifMiner {
 		NormalDistribution dimensinalDistributions[]  =  getDistributionByRandomSampling(timeFrames);
 	
 		
-		//// (Pain in the Ass) Search for values alpha dn c (projection distance) which lead to a sparce collision matrix
+		//// (Pain in the Ass) Search for values alpha dn c (projection distance) which lead to a sparse collision matrix
 		// the authors set these initially to the c to the full length
 		// and alpha to 3 and grow these based on the density of the collision matrix (heuristics....... :-(
 		
@@ -192,13 +192,13 @@ public class Minnen extends MotifMiner {
 	}
 
 	private double findRandomDistance(DoubleTimeSeries sequences[]) {
-		int idxA = _randomNumberGenerator.nextInt() % sequences.length;
-		int idxB = _randomNumberGenerator.nextInt() % sequences.length;
-
+		int idxA = 1; //_randomNumberGenerator.nextInt() % sequences.length;
+		System.out.println(idxA);
+		int idxB = 1; //randomNumberGenerator.nextInt() % sequences.length;
+		System.out.println(idxB);
 		while (idxB == idxA) {
 			idxB = _randomNumberGenerator.nextInt() % sequences.length;
 		}
-
 		return sequences[idxA].distance(sequences[idxB]);
 	}
 
