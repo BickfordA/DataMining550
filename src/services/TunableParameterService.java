@@ -38,7 +38,7 @@ public class TunableParameterService {
 		_dataSet = DataSetSourceEnum.Electric;
 		_saxAlphabet = AlphabetEnum.NormalAlphabet;
 		
-		_algorithm = MotifMiningAlgorithmEnum.Balasubramanian;
+		_algorithm = MotifMiningAlgorithmEnum.Minnen;
 		
 		
 		_iSaxWordLength = 1;

@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
-
+import services.MyRandom;
 import services.TunableParameterService;
 import multiVariateMotif.MotifMiner;
 import data.DoubleTimeSeries;
@@ -21,7 +21,7 @@ public class Minnen extends MotifMiner {
 	private int _initialProjectionLength;
 	private int _dimensionRelevanceThreshold;
 
-	private Random _randomNumberGenerator;
+	private MyRandom _randomNumberGenerator;
 
 	// for the calculation of the distribution of distances
 	private int _distributionSampleSize;
@@ -32,7 +32,7 @@ public class Minnen extends MotifMiner {
 
 	public void Minnen(TunableParameterService params) {
 		long seed = params.randomNumberSeed();
-		_randomNumberGenerator = new Random(seed);
+		_randomNumberGenerator = new MyRandom(seed);
 		_subSequenceLength = params.getSubSequenceLength();
 		_maxProjectionIterations = params.getMaxProjectionIterations();
 		_initialProjectionLength = params.getInitialProjectionLength();
@@ -192,12 +192,10 @@ public class Minnen extends MotifMiner {
 	}
 
 	private double findRandomDistance(DoubleTimeSeries sequences[]) {
-		int idxA = 1; //_randomNumberGenerator.nextInt() % sequences.length;
-		System.out.println(idxA);
-		int idxB = 1; //randomNumberGenerator.nextInt() % sequences.length;
-		System.out.println(idxB);
+		int idxA = _randomNumberGenerator.nextNonNegative() % sequences.length;
+		int idxB = _randomNumberGenerator.nextNonNegative() % sequences.length;
 		while (idxB == idxA) {
-			idxB = _randomNumberGenerator.nextInt() % sequences.length;
+			idxB = _randomNumberGenerator.nextNonNegative() % sequences.length;
 		}
 		return sequences[idxA].distance(sequences[idxB]);
 	}
