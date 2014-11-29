@@ -12,7 +12,7 @@ import data.Symbol;
 
 public class StatSigUtil {
 	
-	static void assignStatisicalSignificance(ArrayList<MultiDimensionalMotif> motifsFound, Sequence[] sequenceData)
+	public static void assignStatisicalSignificance(ArrayList<MultiDimensionalMotif> motifsFound, Sequence[] sequenceData)
 	{
 		ArrayList< HashMap< Integer, Integer> >  dimensionalSymbolCount = new ArrayList< HashMap< Integer, Integer> >();
 		for(Sequence dimension: sequenceData){
@@ -22,6 +22,9 @@ public class StatSigUtil {
 		
 		for(MultiDimensionalMotif m: motifsFound){
 			double significance = 1;
+			
+			//System.out.println("sdm length: " + m.getMotifs().size());
+			
 			for(SingleDimensionalMotif sdm : m.getMotifs()){
 				//compute the probability
 				double subSignificance = 0;
@@ -34,16 +37,17 @@ public class StatSigUtil {
 				for(int i = 0; i < motifCount; i ++){
 					subSignificance = permutations * Math.pow(prob, i) * Math.pow(1 - prob, possibleWordCount - sdm.getTimeSeries().size());
 				}
-				
+				System.out.print(subSignificance + " ");
 				significance *= subSignificance;
 			}
 			m.setStatSig(significance);
+			//System.out.println(significance);
 		}
 	}
 	
 	
 	//M1 get the counts for all of the different symbols
-	public static HashMap<Integer, Integer> countChars( Sequence inputSequence){
+	private static HashMap<Integer, Integer> countChars( Sequence inputSequence){
 		
 		HashMap<Integer, Integer> symbolCount = new HashMap<Integer, Integer>();
 		
@@ -64,7 +68,7 @@ public class StatSigUtil {
 		return symbolCount;
 	}
 	
-	public static double calculateBernoulliProbability(HashMap< Integer, Integer> symbolCounts, SingleDimensionalMotif motif, int totalCount )
+	private static double calculateBernoulliProbability(HashMap< Integer, Integer> symbolCounts, SingleDimensionalMotif motif, int totalCount )
 	{
 		double prob = 1; 
 		
@@ -77,7 +81,7 @@ public class StatSigUtil {
 		return prob /totalCount;
 	}
 	
-	public static int motifCount(Sequence motif, Sequence fullSeries)
+	private static int motifCount(Sequence motif, Sequence fullSeries)
 	{
 		int count = 0; 
 		
@@ -94,7 +98,7 @@ public class StatSigUtil {
 		return count;
 	}
 
-	public static int permutaionCount(int number, int chosen)
+	private static int permutaionCount(int number, int chosen)
 	{
 		int returnVal = 1;
 		int numberSub = number;

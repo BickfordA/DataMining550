@@ -18,4 +18,23 @@ public class MultivariateMotifBalasubra extends MultiDimensionalMotif{
 	
 	public TemporalOrderingTuple getOrder() { return _ordering; } 
 	
+	public int hashCode() {
+		
+		return 13;
+	}
+	
+	public boolean equals(Object obj){
+		
+		boolean match = false;
+		if(obj instanceof MultivariateMotifBalasubra ){
+			MultivariateMotifBalasubra other = (MultivariateMotifBalasubra) obj;
+			match = true; 
+			match &= other._ordering == this._ordering;
+			if(match == true) System.out.print("match os true");
+			match &= other._subMotifs == this._subMotifs;
+					
+		}
+		
+		return match;
+	}
 }

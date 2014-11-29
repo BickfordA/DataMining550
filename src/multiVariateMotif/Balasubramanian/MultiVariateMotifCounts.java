@@ -2,7 +2,9 @@ package multiVariateMotif.Balasubramanian;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 import data.MultiDimensionalMotif;
 
@@ -19,19 +21,24 @@ public class MultiVariateMotifCounts{
 			int count = _motifCount.get(m);
 			count ++;
 			_motifCount.put(m, count);
+			System.out.println("hit");
 		}else{
+			System.out.println("miss");
 			_motifCount.put(m, 1);
 		}
 		
 	}
 	
-	public List<MultiDimensionalMotif> getMotifsWithCounts(){
+	public ArrayList<MultiDimensionalMotif> getMotifsWithCounts(){
 		ArrayList<MultiDimensionalMotif> motifs = new ArrayList<MultiDimensionalMotif>();
 		
-		motifs.addAll( _motifCount.keySet());
+		Iterator it = _motifCount.entrySet().iterator();
 		
-		for(MultiDimensionalMotif m: motifs){
-			m.setCount(_motifCount.get(m));
+		while(it.hasNext()){
+			Map.Entry pair = (Map.Entry) it.next();
+			MultiDimensionalMotif m = (MultiDimensionalMotif)pair.getKey();
+			System.out.print(m.getMotifs().size() + " - ");
+			motifs.add((MultiDimensionalMotif)pair.getKey());
 		}
 		
 		return motifs;
