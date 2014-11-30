@@ -41,12 +41,12 @@ public class TunableParameterService {
 		_algorithm = MotifMiningAlgorithmEnum.Minnen;
 		
 		
-		_iSaxWordLength = 1;
+		_iSaxWordLength = 100;
 		_iSaxBaseCardinality = 4;
 		
 		//minnen init
-		_minnenSequenceLength = 10;
-		_maxProjectionIterations = 1000;
+		_minnenSequenceLength = 100;
+		_maxProjectionIterations = 100;
 		_intitialProjectionLength = 100;
 		_dimensionalRelevanceThreshold = 1 ;
 		_randomNumberSeed = 10;

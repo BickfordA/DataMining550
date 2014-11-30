@@ -50,7 +50,7 @@ public class Minnen extends MotifMiner {
 		DoubleTimeSeries[][] timeFrames = new DoubleTimeSeries[dataset.length][dataset[0].size() / _subSequenceLength];
 		
 		Sequence[][] timeSequences = new Sequence[timeFrames.length][timeFrames[0].length];
-		
+		System.out.println("splitting");
 		//Collect all subsequences of length w from the time series (like time stamps )
 		int idx = 0;
 		for (int i = 0; i < dataset[0].size()-_subSequenceLength; i += _subSequenceLength){
@@ -63,14 +63,14 @@ public class Minnen extends MotifMiner {
 		
 		
 		//Compute an estimate of the distribution between all of the non-trivial matches for each dimension
-		
+		System.out.println("building distributiuons");
 		NormalDistribution dimensinalDistributions[]  =  getDistributionByRandomSampling(timeFrames);
 	
 		
 		//// (Pain in the Ass) Search for values alpha dn c (projection distance) which lead to a sparse collision matrix
 		// the authors set these initially to the c to the full length
 		// and alpha to 3 and grow these based on the density of the collision matrix (heuristics....... :-(
-		
+		System.out.println("descritizing");
 		
 		//compute the sax word length and aplhabet size for each dimension
 		try{
@@ -81,19 +81,20 @@ public class Minnen extends MotifMiner {
 			
 			for(int i = 0; i < timeSequences.length; i ++){
 				for(int j = 0; j < timeSequences[i].length; j++){
+//					System.out.println(".");
 					timeSequences[i][j] = saxer.dexcritizeTimeSeries(timeFrames[i][j], alphabet);
 				}
 			}
-			
+			System.out.println("descritized");
 		}catch (ClassNotFoundException exeption){
 			System.out.println(exeption.getMessage());
 			return;
 		}
 		
 		//Build the collision matrix using reandom projection over the SAX words
-		
+		System.out.println("build collision matrix");
 		CollisionMatrix collision = generateCollisionMatrix(timeSequences, _initialProjectionLength );
-		
+		System.out.println("get max collisions");
 		ArrayList<CollisionPair> collisionsOfMaxSize = collision.getMaxCollisions(); 
 		System.out.println("number of colision of max size: " + collisionsOfMaxSize.size());
 		

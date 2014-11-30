@@ -73,7 +73,7 @@ public class CollisionMatrix {
 				if(collisionValue > max){
 					max = collisionValue;
 				}
-				System.out.print("c v "+ collisionValue);
+//				System.out.print("c v "+ collisionValue);
 			}
 		}
 		System.out.println("get Max v: " + max);
