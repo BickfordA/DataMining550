@@ -30,7 +30,7 @@ public class TunableParameterService {
     
     //Balasubramanian variables
     private  int _timeStampLength;
-    
+    private  int _neighborhoodSize;
 	
 	private TunableParameterService()
 	{
@@ -38,10 +38,10 @@ public class TunableParameterService {
 		_dataSet = DataSetSourceEnum.Electric;
 		_saxAlphabet = AlphabetEnum.NormalAlphabet;
 		
-		_algorithm = MotifMiningAlgorithmEnum.Minnen;
+		_algorithm = MotifMiningAlgorithmEnum.Balasubramanian;
 		
 		
-		_iSaxWordLength = 100;
+		_iSaxWordLength = 20;
 		_iSaxBaseCardinality = 4;
 		
 		//minnen init
@@ -53,7 +53,8 @@ public class TunableParameterService {
 		_randomDistributiuonSampleSize = 20;
 		
 		//Balla....
-		_timeStampLength = 10;
+		_timeStampLength = 1000;
+		_neighborhoodSize = 10;
 	}
 	
 	//getters for the values 
@@ -114,6 +115,10 @@ public class TunableParameterService {
 
 	public int getTimeStampLength() {
 		return _timeStampLength;
+	}
+
+	public int getNeighborHoodSize() {
+		return _neighborhoodSize;
 	}
 
 }

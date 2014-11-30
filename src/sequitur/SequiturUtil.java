@@ -9,7 +9,7 @@ import data.Symbol;
 
 public class SequiturUtil {
 	
-	private final static int _minSingleVarMotifSize = 4;
+	private final static int _minSingleVarMotifSize = 10;
 	
 	public ArrayList<SingleDimensionalMotif> getSequiturMotifs(Sequence seq)
 	{

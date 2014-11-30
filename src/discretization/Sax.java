@@ -69,7 +69,7 @@ public class Sax {
 			aggregateValues[i] = aggregateValues[i] / i;
 		}
 		
-		DoubleTimeSeries retVal  = new DoubleTimeSeries(tsValues, timeSeries.getStream());
+		DoubleTimeSeries retVal  = new DoubleTimeSeries(aggregateValues, timeSeries.getStream());
 		return retVal;
 	}
 

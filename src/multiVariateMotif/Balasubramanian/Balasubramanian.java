@@ -18,6 +18,7 @@ import factories.AlphabetFactory;
 public class Balasubramanian extends MotifMiner{
 
 	private int _timeStampLength;
+	private int _neighborHoodSize;
 	
 	
 	public Balasubramanian(){
@@ -26,6 +27,7 @@ public class Balasubramanian extends MotifMiner{
 
 	public void Balasubramanian(TunableParameterService params){
 		_timeStampLength = params.getTimeStampLength();
+		_neighborHoodSize = params.getNeighborHoodSize();
 	}
 	
 	public void mineDataForMotifs(DoubleTimeSeries[] dataset){
@@ -61,7 +63,7 @@ public class Balasubramanian extends MotifMiner{
 			return;
 		}
 		System.out.println("looking for motif bags");
-		_motifs = generatMotifBagsAndOrderings(10 , timeStamps).getMotifsWithCounts();
+		_motifs = generatMotifBagsAndOrderings(_neighborHoodSize , timeStamps).getMotifsWithCounts();
 		System.out.println("Finished Looking");
 		
 	}
@@ -71,7 +73,7 @@ public class Balasubramanian extends MotifMiner{
 		MultiVariateMotifCounts motifs = new MultiVariateMotifCounts();
 		System.out.println("Time stamp count: "+ timeStamps.length);
 		for(int i = 0;  i < timeStamps.length-neighborhoodDistance; i += neighborhoodDistance ){
-			System.out.println("\n\nTime stamp: "+ i);
+			System.out.println("\n\neighborhood stamp: "+ i);
 			TimeStamp[] currentNeighborHood = new TimeStamp[neighborhoodDistance];
 			
 			//pull out the neighborhood 
