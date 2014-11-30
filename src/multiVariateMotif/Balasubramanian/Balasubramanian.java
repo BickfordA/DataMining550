@@ -45,7 +45,11 @@ public class Balasubramanian extends MotifMiner{
 				
 				Sequence subSequence[] = new Sequence[dataset.length];
 				for(int j = 0; j < dataset.length; j ++){
-					DoubleTimeSeries subTs = new DoubleTimeSeries(Arrays.copyOfRange(dataset[j].getTimeSeries(),i, i +_timeStampLength), Arrays.copyOfRange(dataset[j].getTimeStamps(), i, i +_timeStampLength) ,j);
+					System.out.println("j: "+ j + " - "+dataset[j].getTimeSeries().length + " i stop " +( i +_timeStampLength) + " start  " + i);
+					double[] ogTimeseries = dataset[j].getTimeSeries();
+					double[] subTimeseries = Arrays.copyOfRange(dataset[j].getTimeSeries(),i, i +_timeStampLength);
+					long[] subTstamps = Arrays.copyOfRange(dataset[j].getTimeStamps(), i, i +_timeStampLength);
+					DoubleTimeSeries subTs = new DoubleTimeSeries(subTimeseries, subTstamps,  j);
 					subSequence[j] = saxer.dexcritizeTimeSeries( subTs,  alphabet);
 				}
 				timeStamps[count] = new TimeStamp(subSequence);
@@ -100,6 +104,7 @@ public class Balasubramanian extends MotifMiner{
 			for(ArrayList<SingleDimensionalMotif> set: neighborhoodMotifPowerSet){
 				//make sure that the motifs don't overlap (in the same single variate time stream)
 				if(noOverLappingMotifs(set)){
+					//System.out.println("set size: " + set.size());
 					TemporalOrderingTuple to = new TemporalOrderingTuple(getTemporalOrderings(set));
 					MultivariateMotifBalasubra foundMotif = new MultivariateMotifBalasubra(set, to);
 					
@@ -139,9 +144,11 @@ public class Balasubramanian extends MotifMiner{
 			//each i'th bit corresponds to a item in the original set
 			for(int j = 0 ; j < motifs.size(); j++ ){
 				//check if the item should be included in the set
-				if((powerSetSize & (1L << j)) != 0){
+//				System.out.print(","+(1L << j)+ " " + (i & (1L << j)) );
+				if((i & (1L << j)) != 0){
 					//this bit is set and it is in the powerset
 					set.add(motifs.get(j));
+//					System.out.println("add");
 				}
 			}
 			powerSet.add(set);

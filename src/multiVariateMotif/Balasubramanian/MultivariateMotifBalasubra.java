@@ -29,9 +29,9 @@ public class MultivariateMotifBalasubra extends MultiDimensionalMotif{
 		if(obj instanceof MultivariateMotifBalasubra ){
 			MultivariateMotifBalasubra other = (MultivariateMotifBalasubra) obj;
 			match = true; 
-			match &= other._ordering == this._ordering;
-			if(match == true) System.out.print("match os true");
-			match &= other._subMotifs == this._subMotifs;
+			match &= other._ordering.equals(this._ordering);
+//			if(match == true) System.out.print("match os true");
+			match &= other._subMotifs.equals( this._subMotifs );
 					
 		}
 		

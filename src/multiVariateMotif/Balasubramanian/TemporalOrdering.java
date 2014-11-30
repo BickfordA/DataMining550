@@ -80,7 +80,7 @@ public class TemporalOrdering {
 			equal &= (_streamB == other._streamB);
 			equal &= (_orderA == other._orderA);
 			equal &= (_orderB == other._orderB);
-			
+			//System.out.println("temporal ordering mismatch");
 			return equal;
 		}
 		return false;

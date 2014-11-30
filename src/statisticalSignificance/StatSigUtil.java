@@ -23,25 +23,37 @@ public class StatSigUtil {
 		for(MultiDimensionalMotif m: motifsFound){
 			double significance = 1;
 			
-			//System.out.println("sdm length: " + m.getMotifs().size());
+			System.out.println("sdm length: " + m.getMotifs().size());
 			
 			for(SingleDimensionalMotif sdm : m.getMotifs()){
 				//compute the probability
 				double subSignificance = 0;
-				int possibleWordCount = sequenceData[sdm.getStream()].size() - sdm.getTimeSeries().size();
+				int possibleWordCount = sequenceData[sdm.getStream()].size() ;
 				int motifCount = motifCount(sdm.getTimeSeries(), sequenceData[sdm.getStream()]);
 				
 				double prob = calculateBernoulliProbability(dimensionalSymbolCount.get(sdm.getStream()), sdm, possibleWordCount);
 				
-				double permutations = permutaionCount(possibleWordCount, sdm.getTimeSeries().size());
+				long permutations = permutaionCount(possibleWordCount, sdm.getTimeSeries().size());
+				//System.out.println("perm: " + permutations);
+				//System.out.println("prob: " + prob);
+				//System.out.println("count: " + motifCount);
+				boolean err = false;
 				for(int i = 0; i < motifCount; i ++){
-					subSignificance = permutations * Math.pow(prob, i) * Math.pow(1 - prob, possibleWordCount - sdm.getTimeSeries().size());
+					double d2 = Math.pow(1 - prob, possibleWordCount - sdm.getTimeSeries().size());
+					if(d2 == 0){
+						d2 = Double.MIN_VALUE;
+					}
+					subSignificance +=   Math.pow(prob, i) * permutations *  d2 ;
+					if(subSignificance <= 0  && ! err){
+						err = true;
+						System.out.println("perm " + permutations + " pow " + Math.pow(prob, i)  + " sec pow " +Math.pow(1 - prob, possibleWordCount - sdm.getTimeSeries().size()));
+					}
 				}
-				System.out.print(subSignificance + " ");
+				//System.out.println("sub sig:"+ subSignificance + " ");
 				significance *= subSignificance;
 			}
 			m.setStatSig(significance);
-			//System.out.println(significance);
+			System.out.println("       sts:"+significance);
 		}
 	}
 	
@@ -64,6 +76,10 @@ public class StatSigUtil {
 			}
 		}
 		
+		for(Integer i: symbolCount.keySet()){
+			System.out.print("symbol : " + i +" ");
+		}
+		System.out.println("donez");
 		
 		return symbolCount;
 	}
@@ -75,10 +91,18 @@ public class StatSigUtil {
 		//multiply the number of words together. 
 		for(Symbol s: motif.getTimeSeries().getSequence()){
 			int v = s.getSymbol();
-			prob *= symbolCounts.get(v);
+//			System.out.println(" v: "+ v + " count "+ symbolCounts.get(v));
+			double sub = (double) symbolCounts.get(v) / totalCount;
+			prob = sub * prob;
+			if(prob > 1  || prob < 0 ){// this should never happen 
+				System.out.println("prob result: " + prob + "sub" + sub + " total count: " + totalCount +" sub count: " + symbolCounts.get(v) );
+			}
+//			System.out.println("prob result: " + prob + "sub" + sub);
 		}
 		
-		return prob /totalCount;
+//		System.out.println("prob result: " + (prob)+ "total: "+ totalCount);
+		
+		return prob;
 	}
 	
 	private static int motifCount(Sequence motif, Sequence fullSeries)
@@ -98,15 +122,15 @@ public class StatSigUtil {
 		return count;
 	}
 
-	private static int permutaionCount(int number, int chosen)
+	private static long permutaionCount(int number, int chosen)
 	{
-		int returnVal = 1;
-		int numberSub = number;
+		long returnVal = 1;
+		long numberSub = number;
 		for(int i = 0 ; i < chosen; i ++){
 			returnVal *= numberSub;
 			numberSub --;
 		}
-		int chosenFactorial = 1;
+		long chosenFactorial = 1;
 		for(int i = 1; i <= chosen; i ++ ){
 			chosenFactorial *= i; 
 		}

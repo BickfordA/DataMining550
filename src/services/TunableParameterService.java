@@ -42,7 +42,7 @@ public class TunableParameterService {
 		
 		
 		_iSaxWordLength = 1;
-		_iSaxBaseCardinality = 4;
+		_iSaxBaseCardinality = 16;
 		
 		//minnen init
 		_minnenSequenceLength = 10;

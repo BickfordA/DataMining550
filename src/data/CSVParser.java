@@ -87,6 +87,7 @@ public class CSVParser implements Parser {
 				mean += values[j];
 			}
 			mean = mean / values.length;
+			//System.out.println("mean" + mean);
 		
 			//get the standard deviation
 			for(int j = 0 ; j < values.length; j++){
@@ -95,10 +96,14 @@ public class CSVParser implements Parser {
 			}
 			stdev = stdev / values.length;
 			stdev = Math.sqrt(stdev);
+			//System.out.println("stdev" + stdev + "v: ");
 			
+			if(stdev != 0){
 			//calculate the z-score
-			for(int j = 0 ; j < values.length; j++){
-				values[j] = (values[j]- mean) / stdev;
+				for(int j = 0 ; j < values.length; j++){
+					values[j] = (values[j]- mean) / stdev;
+					//System.out.println(values[j]);
+				}
 			}
 			
 			normalized[i] = new DoubleTimeSeries(values, i);

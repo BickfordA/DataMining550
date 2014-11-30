@@ -170,9 +170,12 @@ public class Rule{
 	    		}
 	    		symPos ++;
 	    	}
-	    	ruleArray.add(new SequiturMotif( indicies, charRule));
+	    	if(processedRules > 0 ){
+	    		ruleArray.add(new SequiturMotif( indicies, charRule));
+	    	}
 	    	processedRules++; 
 	    }
+	    
 		
 		return ruleArray;
 	}

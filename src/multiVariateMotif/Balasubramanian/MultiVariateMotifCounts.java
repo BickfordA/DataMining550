@@ -21,9 +21,10 @@ public class MultiVariateMotifCounts{
 			int count = _motifCount.get(m);
 			count ++;
 			_motifCount.put(m, count);
-			System.out.println("hit");
+//			System.out.print(m.getMotifs().size() + " - hh ");
+//			System.out.println("hit");
 		}else{
-			System.out.println("miss");
+//			System.out.println("miss");
 			_motifCount.put(m, 1);
 		}
 		
@@ -37,7 +38,7 @@ public class MultiVariateMotifCounts{
 		while(it.hasNext()){
 			Map.Entry pair = (Map.Entry) it.next();
 			MultiDimensionalMotif m = (MultiDimensionalMotif)pair.getKey();
-			System.out.print(m.getMotifs().size() + " - ");
+			//System.out.print(m.getMotifs().size() + " - dd ");
 			motifs.add((MultiDimensionalMotif)pair.getKey());
 		}
 		

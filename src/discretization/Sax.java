@@ -32,14 +32,20 @@ public class Sax {
 		ArrayList<Symbol> saxSequence = new ArrayList<Symbol>();		
 		double[] cuts = alphabet.getCuts(_baseCardinality);
 		
+//		for(double cut: cuts){
+//			System.out.print(" "+ cut);
+//		}
 		
 		for(double value: values){
 			int rep = 0;
-			while(rep < cuts.length && value < cuts[rep] ){
+//			System.out.println("value: " + value);
+			while(rep < cuts.length && value > cuts[rep] ){
+				//System.out.print("cut: "+ cuts[rep]);
 				rep ++;
 			}
 			Symbol repSymbol = new Symbol(rep);
 			saxSequence.add(repSymbol);
+//			System.out.println("sax symbol: " + rep);
 		}
 		return new Sequence(saxSequence, tstamps, data.getStream() );
 	}
