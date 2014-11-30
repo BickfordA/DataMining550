@@ -2,6 +2,9 @@ package statisticalSignificance;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 
 import org.apache.commons.math3.util.MathUtils;
@@ -21,6 +24,8 @@ public class StatSigUtil {
 			dimensionalSymbolCount.add(symbolCount);
 		}
 		
+		ArrayList<Double> statSig = new ArrayList<Double>();
+		
 		for(MultiDimensionalMotif m: motifsFound){
 			double significance = 1;
 			
@@ -30,8 +35,9 @@ public class StatSigUtil {
 				//compute the probability
 				double subSignificance = 0;
 				int possibleWordCount = sequenceData[sdm.getStream()].size() ;
-				int motifCount = motifCount(sdm.getTimeSeries(), sequenceData[sdm.getStream()]);
 				
+				int motifCount = motifCount(sdm.getTimeSeries(), sequenceData[sdm.getStream()]);
+
 				double prob = calculateBernoulliProbability(dimensionalSymbolCount.get(sdm.getStream()), sdm, possibleWordCount);
 				
 				long permutations = permutaionCount(possibleWordCount, sdm.getTimeSeries().size());
@@ -54,9 +60,16 @@ public class StatSigUtil {
 				significance *= subSignificance;
 			}
 			m.setStatSig(significance);
-			if ( significance > 0)
-				System.out.println("       sts:"+significance);
+			//if ( significance > 0)
+				statSig.add(significance);
+//				System.out.println("       sts:"+significance);
 		}
+		Collections.sort(statSig);
+		System.out.println("found final: " + statSig.size());
+		for(int i = 0 ; i < 10  && i < statSig.size(); i++){
+			System.out.println(statSig.get(i));
+		}
+		
 	}
 	
 	
@@ -90,10 +103,19 @@ public class StatSigUtil {
 	{
 		double prob = 1; 
 		
+//		for(Integer i: symbolCounts.keySet()){
+//			System.out.print("symbol : " + i +" ");
+//		}
+		
 		//multiply the number of words together. 
 		for(Symbol s: motif.getTimeSeries().getSequence()){
 			int v = s.getSymbol();
+			 if(symbolCounts.get(v) == null ||symbolCounts.get(v)  == 0){
+				 symbolCounts.put(v, 1); //this is dirty
+			 }
+			
 //			System.out.println(" v: "+ v + " count "+ symbolCounts.get(v));
+
 			double sub = (double) symbolCounts.get(v) / totalCount;
 			prob = sub * prob;
 			if(prob > 1  || prob < 0 ){// this should never happen 

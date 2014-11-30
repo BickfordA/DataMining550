@@ -38,11 +38,11 @@ public class TunableParameterService {
 		_dataSet = DataSetSourceEnum.Electric;
 		_saxAlphabet = AlphabetEnum.NormalAlphabet;
 		
-		_algorithm = MotifMiningAlgorithmEnum.Balasubramanian;
+		_algorithm = MotifMiningAlgorithmEnum.Minnen;
 		
 		
 		_iSaxWordLength = 20;
-		_iSaxBaseCardinality = 4;
+		_iSaxBaseCardinality = 16;
 		
 		//minnen init
 		_minnenSequenceLength = 100;
@@ -54,7 +54,7 @@ public class TunableParameterService {
 		
 		//Balla....
 		_timeStampLength = 1000;
-		_neighborhoodSize = 10;
+		_neighborhoodSize = 20;
 	}
 	
 	//getters for the values 

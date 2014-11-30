@@ -60,7 +60,7 @@ public class CollisionMatrix {
 				}
 			}
 		}
-		System.out.println("max collison size: " + max + "\n");
+//		System.out.println("max collison size: " + max + "\n");
 		
 		return collisions;
 	}
@@ -78,7 +78,7 @@ public class CollisionMatrix {
 				}
 			}
 		}
-		System.out.println("size collison size: " + max + "\n");
+//		System.out.println("size collison size: " + max + "\n");
 		
 		return collisions;
 	}
