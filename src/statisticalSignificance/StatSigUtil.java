@@ -24,7 +24,7 @@ public class StatSigUtil {
 		for(MultiDimensionalMotif m: motifsFound){
 			double significance = 1;
 			
-			System.out.println("sdm length: " + m.getMotifs().size());
+//			System.out.println("sdm length: " + m.getMotifs().size());
 			
 			for(SingleDimensionalMotif sdm : m.getMotifs()){
 				//compute the probability
@@ -47,14 +47,15 @@ public class StatSigUtil {
 					subSignificance +=   Math.pow(prob, i) * permutations *  d2 ;
 					if(subSignificance <= 0  && ! err){
 						err = true;
-						System.out.println("perm " + permutations + " pow " + Math.pow(prob, i)  + " sec pow " +Math.pow(1 - prob, possibleWordCount - sdm.getTimeSeries().size()));
+//						System.out.println("perm " + permutations + " pow " + Math.pow(prob, i)  + " sec pow " +Math.pow(1 - prob, possibleWordCount - sdm.getTimeSeries().size()));
 					}
 				}
 				//System.out.println("sub sig:"+ subSignificance + " ");
 				significance *= subSignificance;
 			}
 			m.setStatSig(significance);
-			System.out.println("       sts:"+significance);
+			if ( significance > 0)
+				System.out.println("       sts:"+significance);
 		}
 	}
 	
@@ -96,7 +97,7 @@ public class StatSigUtil {
 			double sub = (double) symbolCounts.get(v) / totalCount;
 			prob = sub * prob;
 			if(prob > 1  || prob < 0 ){// this should never happen 
-				System.out.println("prob result: " + prob + "sub" + sub + " total count: " + totalCount +" sub count: " + symbolCounts.get(v) );
+//				System.out.println("prob result: " + prob + "sub" + sub + " total count: " + totalCount +" sub count: " + symbolCounts.get(v) );
 			}
 //			System.out.println("prob result: " + prob + "sub" + sub);
 		}
