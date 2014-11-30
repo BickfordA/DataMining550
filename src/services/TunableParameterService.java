@@ -38,11 +38,11 @@ public class TunableParameterService {
 		_dataSet = DataSetSourceEnum.Electric;
 		_saxAlphabet = AlphabetEnum.NormalAlphabet;
 		
-		_algorithm = MotifMiningAlgorithmEnum.Balasubramanian;
+		_algorithm = MotifMiningAlgorithmEnum.Minnen;
 		
 		
 		_iSaxWordLength = 1;
-		_iSaxBaseCardinality = 16;
+		_iSaxBaseCardinality = 4;
 		
 		//minnen init
 		_minnenSequenceLength = 10;

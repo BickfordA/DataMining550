@@ -18,7 +18,8 @@ public class CollisionMatrix {
 			j = i;
 			i = t;
 		}
-		return _collisions[i][j];
+		int count = _collisions[j][i];
+		return count;
 	}
 	
 	public void setAt(int i, int j, int value){
@@ -36,7 +37,9 @@ public class CollisionMatrix {
 			j = i;
 			i = t;
 		}
-		_collisions[i][j]++;
+		int count = _collisions[j][i];
+		_collisions[j][i] = count + 1;
+//		System.out.println("increment : " + count );
 	}
 
 	public ArrayList<CollisionPair> getMaxCollisions() {
@@ -45,17 +48,36 @@ public class CollisionMatrix {
 		int max = 1;
 		for(int i = 1 ; i < _collisions.length-1; i ++){
 			for(int j  = 0; j < i ; j++){
-				if(_collisions[i][j] > max){
+				int collisionValue = _collisions[i][j];
+				if(collisionValue > max){
 					collisions.clear();
 					collisions.add(new CollisionPair(i , j));
+					max = collisionValue;
 				}
-				else if(_collisions[i][j] == max){
+				else if(collisionValue == max){
 					collisions.add(new CollisionPair(i , j));
 				}
 			}
 		}
+		System.out.println("max collison size: " + max + "\n");
 		
 		return collisions;
+	}
+	
+	public int getMaxCollisionNumber()
+	{
+		int max = 1;
+		for(int i = 1 ; i < _collisions.length-1; i ++){
+			for(int j  = 0; j < i ; j++){
+				int collisionValue = _collisions[i][j];
+				if(collisionValue > max){
+					max = collisionValue;
+				}
+				System.out.print("c v "+ collisionValue);
+			}
+		}
+		System.out.println("get Max v: " + max);
+		return max;
 	}
 
 }

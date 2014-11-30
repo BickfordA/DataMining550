@@ -1,5 +1,6 @@
 package statisticalSignificance;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -124,17 +125,23 @@ public class StatSigUtil {
 
 	private static long permutaionCount(int number, int chosen)
 	{
-		long returnVal = 1;
-		long numberSub = number;
-		for(int i = 0 ; i < chosen; i ++){
-			returnVal *= numberSub;
-			numberSub --;
-		}
 		long chosenFactorial = 1;
 		for(int i = 1; i <= chosen; i ++ ){
 			chosenFactorial *= i; 
 		}
 		
-		return returnVal / chosenFactorial;
+		
+		BigInteger returnVal = BigInteger.valueOf(1);
+		long numberSub = number;
+		for(int i = 0 ; i < chosen; i ++){
+//			System.out.println("retv: " + returnVal);
+			returnVal = returnVal.multiply(BigInteger.valueOf(numberSub));
+//			System.out.println("retv: " + returnVal);
+			numberSub --;
+		}
+
+		BigInteger perm = returnVal.divide( BigInteger.valueOf(chosenFactorial));
+//		System.out.println("num : " + number +" retv: " + returnVal + " chosen " + chosenFactorial);
+		return perm.longValue();
 	}
 }

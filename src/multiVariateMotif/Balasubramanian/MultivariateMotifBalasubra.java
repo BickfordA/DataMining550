@@ -12,7 +12,7 @@ public class MultivariateMotifBalasubra extends MultiDimensionalMotif{
 	TemporalOrderingTuple _ordering;
 
 	public MultivariateMotifBalasubra( ArrayList<SingleDimensionalMotif> motifs, TemporalOrderingTuple ordering){
-		_subMotifs = motifs;
+		super(motifs);
 		_ordering = ordering;
 	}
 	

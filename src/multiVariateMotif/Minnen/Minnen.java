@@ -5,11 +5,14 @@ import java.util.HashMap;
 import java.util.Random;
 
 import org.apache.commons.math3.distribution.NormalDistribution;
+
 import services.MyRandom;
 import services.TunableParameterService;
 import multiVariateMotif.MotifMiner;
 import data.DoubleTimeSeries;
+import data.MultiDimensionalMotif;
 import data.Sequence;
+import data.SingleDimensionalMotif;
 import discretization.Alphabet;
 import discretization.Sax;
 import factories.AlphabetFactory;
@@ -92,11 +95,16 @@ public class Minnen extends MotifMiner {
 		CollisionMatrix collision = generateCollisionMatrix(timeSequences, _initialProjectionLength );
 		
 		ArrayList<CollisionPair> collisionsOfMaxSize = collision.getMaxCollisions(); 
+		System.out.println("number of colision of max size: " + collisionsOfMaxSize.size());
 		
 		//Enumerate the motifs based on the collision matrix
 		ArrayList<Double> distancePerDim = new ArrayList<Double>();
 		
+		ArrayList<MultiDimensionalMotif> mdfs = new ArrayList<MultiDimensionalMotif>();
+		
 		for(CollisionPair pair: collisionsOfMaxSize){
+			ArrayList<SingleDimensionalMotif> motifList = new ArrayList<SingleDimensionalMotif>();
+
 			// Find the best Collision matrix
 			//find the pair with the lowest distance
 			int idxA = pair.getA();
@@ -120,6 +128,8 @@ public class Minnen extends MotifMiner {
 				if( relevance < _dimensionRelevanceThreshold){
 					relevantDimensions.add(i);
 					dimensionalRelevance.add(relevance);
+					Sequence dimensionSequence = timeSequences[i][idxA];//A or B ?
+					motifList.add(new SingleDimensionalMotif(dimensionSequence, i ));
 				}
 			}
 			double d = 0;
@@ -128,28 +138,41 @@ public class Minnen extends MotifMiner {
 			}
 			distancePerDim.add(d);
 			
+			mdfs.add(new MultiDimensionalMotif(motifList));
+			
 		}
 		
 		//select the n ones with the smallest dist per rel dim.
-		int smallestIdx;
-		double smallest = Double.MAX_VALUE;
-		for(int i = 0 ; i < distancePerDim.size(); i++){
-			if(distancePerDim.get(i) < smallest){
-				smallest = distancePerDim.get(i);
-			}
+//		int smallestIdx;
+//		double smallest = Double.MAX_VALUE;
+//		for(int i = 0 ; i < distancePerDim.size(); i++){
+//			if(distancePerDim.get(i) < smallest){
+//				smallest = distancePerDim.get(i);
+//			}
+//		}
+		
+		//fuck it ! just get them all
+		ArrayList<Integer> selection = new ArrayList<Integer>();
+		//could select the top n eventually
+		for(int i = 0 ; i < distancePerDim.size(); i ++){
+			selection.add(i);
 		}
 		
 		
-		//Estimate the neighborhood radius
+		
+		
+		//Estimate the neighborhood radius ((?))
+		
 		
 		//Locate all other occurrences of this motif
 		
+
 		
 		
 		// Remove subsequences that would constitute trivial matches with the occurrences of this motif
 		//(i.e subsequences of this motif ?) 
-		
-		
+		System.out.println("Number of Motifs FOudn: " + mdfs.size());
+		_motifs = mdfs;
 		
 	}
 	
@@ -168,24 +191,40 @@ public class Minnen extends MotifMiner {
 		// create a distribytion for each dimension
 		NormalDistribution[] retVal = new NormalDistribution[timeFrames.length];
 		for (int i = 0; i < timeFrames.length; i++) {
-
-			double mean = 0;
-			double[] distances = new double[_distributionSampleSize];
-			for (int j = 0; j < _distributionSampleSize; j++) {
-				distances[j] = findRandomDistance(timeFrames[i]);
-				mean += distances[j];
-			}
-
-			// find std deviation
+			int sampleSize = _distributionSampleSize;
+			boolean maxSamples = false;
 			double stdev = 0;
-			for (int j = 0; j < _distributionSampleSize; j++) {
-				double v = distances[j] - mean;
-				stdev += v * v;
+			while(stdev == 0){
+				double mean = 0;
+				double[] distances = new double[sampleSize];
+				for (int j = 0; j < sampleSize; j++) {
+					distances[j] = findRandomDistance(timeFrames[i]);
+					mean += distances[j];
+				}
+	
+				// find std deviation
+				for (int j = 0; j < sampleSize; j++) {
+					double v = distances[j] - mean;
+					stdev += v * v;
+				}
+				stdev = stdev / sampleSize;
+				stdev = Math.sqrt(stdev);
+				
+				if(maxSamples){
+					stdev = Double.MIN_VALUE;
+				}
+				
+				if(stdev == 0 && !maxSamples){
+					sampleSize = sampleSize * 2;
+					if( sampleSize > _distributionSampleSize){
+						sampleSize = _distributionSampleSize;
+						maxSamples = true;
+					}
+					continue;
+				}
+				
+				retVal[i] = new NormalDistribution(mean, stdev);
 			}
-			stdev = stdev / _distributionSampleSize;
-			stdev = Math.sqrt(stdev);
-
-			retVal[i] = new NormalDistribution(mean, stdev);
 		}
 		return retVal;
 
@@ -204,28 +243,39 @@ public class Minnen extends MotifMiner {
 			int startProjectionSize) {
 		CollisionMatrix collisionMatrix = new CollisionMatrix(
 				sequences[0].length);
+		
 		Boolean[] selectedDimensions = new Boolean[sequences[0][0].size()];
 
 		// start with no projection and work up (by subtracting from this number
 		// ;) )
 		int projSize = sequences[0][0].size();
 
-		// TODO: need to take the min of the maX iterations and the number of
-		// dimension combinations
-		for (int i = 0; i < _maxProjectionIterations; i++) {
+		int maxCollisionSize = 0;
+		while(maxCollisionSize < 4  && projSize > 0){
+			// TODO: need to take the min of the maX iterations and the number of
+			// dimension combinations
+			for (int i = 0; i < _maxProjectionIterations; i++) {
+				selectedDimensions = setToValue(selectedDimensions, false);
+				selectedDimensions = makeRandomSelection(selectedDimensions,
+						projSize);
+	
+				// project the selection
+				projectTheSelection(collisionMatrix, sequences, selectedDimensions);
+			}
+			maxCollisionSize = collisionMatrix.getMaxCollisionNumber(); 
+			projSize = projSize - 1;
+			System.out.print(projSize);
 			selectedDimensions = setToValue(selectedDimensions, false);
-			selectedDimensions = makeRandomSelection(selectedDimensions,
-					projSize);
-
-			// project the selection
-			projectTheSelection(collisionMatrix, sequences, selectedDimensions);
 		}
-
-		selectedDimensions = setToValue(selectedDimensions, false);
-
 		return collisionMatrix;
 	}
 
+	/**
+	 * 
+	 * @param vector
+	 * @param value
+	 * @return
+	 */
 	public Boolean[] setToValue(Boolean[] vector, Boolean value) {
 		for (int i = 0; i < vector.length; i++) {
 			vector[i] = value;
@@ -233,18 +283,26 @@ public class Minnen extends MotifMiner {
 		return vector;
 	}
 
+	/**
+	 * 
+	 * @param choices
+	 * @param selectionSize
+	 * @return
+	 */
 	public Boolean[] makeRandomSelection(Boolean[] choices, int selectionSize) {
 		if (selectionSize >= choices.length) {
 			return setToValue(choices, true);
 		}
-
 		int selection;
-		;
 		for (int i = 0; i < selectionSize; i++) {
 			selection = _randomNumberGenerator.nextInt();
+			if(selection < 0 ){
+				selection = selection * -1;
+			}
 			boolean notSet = true;
 			while (notSet) {
 				int index = selection % choices.length;
+//				System.out.println("Selection: " +selection + " choises length " + choices.length + " index: " + index );
 				if (choices[index] == true) {
 					// continue to the next one
 					selection++;
@@ -258,27 +316,56 @@ public class Minnen extends MotifMiner {
 		return choices;
 	}
 
+	/**
+	 * 
+	 * @param matrix
+	 * @param data
+	 * @param selected
+	 */
 	public void projectTheSelection(CollisionMatrix matrix, Sequence[][] data,
 			Boolean[] selected) {
+		
+		int selectedSize = 0;
+		for(boolean s: selected){
+			if(s) selectedSize ++;
+		}
 		for (int dimension = 0; dimension < data.length; dimension++) {
 			// For each dimension
 
 			// hash the entries
-			HashMap<char[], ArrayList<Integer>> collisionMap = new HashMap<char[], ArrayList<Integer>>();
+			HashMap<ArrayList<Character>, ArrayList<Integer>> collisionMap = new HashMap<ArrayList<Character>, ArrayList<Integer>>();
 			// record the collisions
 
 			// for each record
 			Sequence[] currentDimension = data[dimension];
 			for (int i = 0; i < currentDimension.length; i++) {
-				char[] key = currentDimension[i].generateCharArray();
+				char[] seqChars = currentDimension[i].generateCharArray();
+				
+				ArrayList<Character> key = new ArrayList<Character>();
+				
+				for(int j = 0;j < selected.length; j ++)
+				{
+					if(selected[j]){
+						key.add(seqChars[j]);
+					}
+				}
+//				System.out.println("selected Size "+ selectedSize);
+//				for(char c: key){
+//					int inc =((int ) c +1);
+//					System.out.print(inc+ " ");
+//					
+//				}
+//				System.out.println("");
 
 				if (collisionMap.containsKey(key)) {
 					ArrayList<Integer> mapping = collisionMap.get(key);
 					mapping.add(i);
+//					System.out.println("hit");
 				} else {
 					ArrayList<Integer> newColision = new ArrayList<Integer>();
 					newColision.add(i);
 					collisionMap.put(key, newColision);
+//					System.out.println("miss");
 				}
 
 			}
@@ -288,7 +375,7 @@ public class Minnen extends MotifMiner {
 					// more than one sequence matched
 					// record each pairwise collision
 					for (int i = 0; i < collisions.size(); i++) {
-						for (int j = i; j < collisions.size(); i++) {
+						for (int j = i; j < collisions.size(); j++) {
 							// record all of the hit combinations
 							matrix.incrementAt(i, j);
 						}

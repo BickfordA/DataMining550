@@ -9,6 +9,11 @@ public class MultiDimensionalMotif {
 	protected double _statisticalSignificance;
 	
 	
+	public MultiDimensionalMotif(ArrayList<SingleDimensionalMotif> subMotifs){
+		_subMotifs = subMotifs;
+	}
+	
+	
 	public void setCount(int count){ _count = count;}
 	public int getCount(){ return _count;}
 	public ArrayList<SingleDimensionalMotif>getMotifs() {return _subMotifs;}
