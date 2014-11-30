@@ -43,6 +43,7 @@ public class CollisionMatrix {
 	}
 
 	public ArrayList<CollisionPair> getMaxCollisions() {
+		
 		ArrayList<CollisionPair> collisions = new ArrayList<CollisionPair>();
 		
 		int max = 1;
@@ -60,6 +61,24 @@ public class CollisionMatrix {
 			}
 		}
 		System.out.println("max collison size: " + max + "\n");
+		
+		return collisions;
+	}
+	
+	public ArrayList<CollisionPair> getCollisionsGreaterThen(int size) {
+		
+		ArrayList<CollisionPair> collisions = new ArrayList<CollisionPair>();
+		
+		int max = size;
+		for(int i = 1 ; i < _collisions.length-1; i ++){
+			for(int j  = 0; j < i ; j++){
+				int collisionValue = _collisions[i][j];
+				if(collisionValue >= max){
+					collisions.add(new CollisionPair(i , j));
+				}
+			}
+		}
+		System.out.println("size collison size: " + max + "\n");
 		
 		return collisions;
 	}

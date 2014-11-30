@@ -95,7 +95,13 @@ public class Minnen extends MotifMiner {
 		System.out.println("build collision matrix");
 		CollisionMatrix collision = generateCollisionMatrix(timeSequences, _initialProjectionLength );
 		System.out.println("get max collisions");
-		ArrayList<CollisionPair> collisionsOfMaxSize = collision.getMaxCollisions(); 
+		
+		int maxSize = collision.getMaxCollisionNumber();
+		ArrayList<CollisionPair> collisionsOfMaxSize = new ArrayList<CollisionPair>();
+		while(collisionsOfMaxSize.size() < 10 ){
+			collisionsOfMaxSize = collision.getCollisionsGreaterThen(maxSize); 
+			maxSize -= 10;
+		}
 		System.out.println("number of colision of max size: " + collisionsOfMaxSize.size());
 		
 		//Enumerate the motifs based on the collision matrix

@@ -126,10 +126,12 @@ public class StatSigUtil {
 
 	private static long permutaionCount(int number, int chosen)
 	{
-		long chosenFactorial = 1;
-		for(int i = 1; i <= chosen; i ++ ){
-			chosenFactorial *= i; 
+		BigInteger chosenFactorial = BigInteger.valueOf(1);
+		for(long i = 1; i <= chosen; i ++ ){
+			chosenFactorial = chosenFactorial.multiply( BigInteger.valueOf(i)); 
+//			System.out.println("sdaf+ " + chosenFactorial.longValue() + " i " + i);
 		}
+//		System.out.println("chosen :" + chosen+ " factorial " + chosenFactorial.longValue());
 		
 		
 		BigInteger returnVal = BigInteger.valueOf(1);
@@ -141,7 +143,7 @@ public class StatSigUtil {
 			numberSub --;
 		}
 
-		BigInteger perm = returnVal.divide( BigInteger.valueOf(chosenFactorial));
+		BigInteger perm = returnVal.divide( chosenFactorial);
 //		System.out.println("num : " + number +" retv: " + returnVal + " chosen " + chosenFactorial);
 		return perm.longValue();
 	}
